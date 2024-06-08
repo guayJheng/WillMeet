@@ -24,9 +24,10 @@ const Calendar = () => {
 
   const getData = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/event", {
-        method: "GET",
+      const res = await fetch(`http://localhost:3000/api/event`, {
+        method: "DELETE",
         cache: "no-store",
+        body: JSON.stringify({ userId: session.user.id }),
       });
       if (!res.ok) {
         throw new Error("Failed to fetch Events");
@@ -38,8 +39,8 @@ const Calendar = () => {
     }
   };
   useEffect(() => {
-    getData();
-  }, []);
+    if (session) getData();
+  }, [session]);
 
   const handleSelect = (info) => {
     showModal();
@@ -69,7 +70,7 @@ const Calendar = () => {
       });
       if (res.ok) {
         getData();
-        router.push("/mainCalendar");
+        router.refresh();
       } else {
         throw new Error("Failed to create an Event");
       }

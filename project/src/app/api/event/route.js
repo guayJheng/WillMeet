@@ -17,8 +17,9 @@ export async function POST(req) {
   }
 }
 
-export async function GET() {
+export async function DELETE(req) {
+  const { userId } = await req.json();
   await connectMongoDB();
-  const events = await Event.find({});
+  const events = await Event.find({ userId });
   return NextResponse.json({ events });
 }
