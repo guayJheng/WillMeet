@@ -17,7 +17,7 @@ const Calendar = () => {
     start: "",
     end: "",
     allDay: true,
-    userId: session?.user.id,
+    userId: session.user.id,
   });
   const [eventsData, setEventsData] = useState();
 
