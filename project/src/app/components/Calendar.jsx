@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 
 const Calendar = () => {
   const router = useRouter();
@@ -17,9 +17,10 @@ const Calendar = () => {
     start: "",
     end: "",
     allDay: true,
+    userId: session?.user.id,
   });
   const [eventsData, setEventsData] = useState();
-  console.log(eventsData);
+
   const getData = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/event", {
@@ -41,12 +42,10 @@ const Calendar = () => {
 
   const handleSelect = (info) => {
     showModal();
-    console.log(info);
     setEventValues({ ...eventValues, start: info.startStr, end: info.endStr });
   };
 
   const onChangeValues = (e) => {
-    console.log(e.target.value);
     setEventValues({ ...eventValues, [e.target.name]: e.target.value });
   };
 
@@ -54,7 +53,7 @@ const Calendar = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = async (e) => {
+  const handleOk = async () => {
     if (!eventValues.title) {
       alert("Please complete the title");
       return;
@@ -62,10 +61,10 @@ const Calendar = () => {
     try {
       const res = await fetch("http://localhost:3000/api/event", {
         method: "POST",
+        body: JSON.stringify(eventValues),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(eventValues),
       });
       if (res.ok) {
         getData();
