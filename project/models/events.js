@@ -16,7 +16,7 @@ const eventSchema = new Schema(
       default: true,
     },
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },
