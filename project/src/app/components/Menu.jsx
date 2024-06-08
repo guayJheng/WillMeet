@@ -10,7 +10,8 @@ import AddmemberPopup from "./AddmemberPopup"
 function Menu() {
   const { data: session } = useSession();
   const [groupList, setGroupList] = useState();
-  const [showPopup, setShowPopup] = useState(false)
+  const [show1stPopup, setShow1stPopup] = useState(false)
+  const [show2ndPopup, setShow2ndPopup] = useState(false)
 
 
   const getGroupData = async () => {
@@ -53,9 +54,9 @@ function Menu() {
           </div>
 
           <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
-        onClick={() => setShowPopup(true)}
+        onClick={() => setShow1stPopup(true)}
         src='/image/add.png' />
-        {showPopup && <CreategroupPopup onClose={() => setShowPopup(false)}/>}
+        {show1stPopup && <CreategroupPopup onClose={() => setShow1stPopup(false)}/>}
       </div>
 
       <div className="grid">
@@ -81,9 +82,9 @@ function Menu() {
           </div>
 
           <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
-        onClick={() => setShowPopup(true)}
+        onClick={() => setShow2ndPopup(true)}
         src='/image/add.png' />
-        {showPopup && <AddmemberPopup onClose={() => setShowPopup(false)}/>}
+        {show2ndPopup && <AddmemberPopup onClose={() => setShow2ndPopup(false)}/>}
       </div>
 
     </div>
