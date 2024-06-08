@@ -58,10 +58,10 @@ function Menu() {
   }, [session]);
 
   return (
-    <div className="bg-[#CCF2F4] h-full p-0 text-center ">
+    <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
       <Link
         href="/mainCalendar"
-        className="bg-white w-full text-2xl m- text-center"
+        className="bg-white w-full text-2xl text-center"
       >
         {session?.user?.name}&apos;s Calendar
       </Link>

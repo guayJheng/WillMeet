@@ -101,6 +101,7 @@ const Calendar = () => {
         events={eventsData}
         selectable={true}
         select={handleSelect}
+        height = "89vh"
       />
       <Modal
         title="Create Event"

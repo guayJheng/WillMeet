@@ -41,12 +41,17 @@ function LoginPage() {
 
   return (
     <Container>
-      <div className="flex-grow">
+      <div className="m-auto">
         <div className="flex justify-center items-center">
-          <div className="w-[30rem] h-[37rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
-            <h3 className="text-6xl text-center mb-7">Will Meet</h3>
+          <div className="w-[30rem] h-[46rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
+            <h3 className="font-Kaushan text-7xl text-center mb-7">Will Meet</h3>
             <hr className="my-3" />
             <form onSubmit={handleSubmit}>
+            {error && (
+                <div className="bg-red-500 w-fit text-sm text-white py-1 px-3 rounded-md mt-2">
+                  {error}
+                </div>
+              )}
               <input
                 type="text"
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +77,7 @@ function LoginPage() {
               </button>
             </form>
             <p className="text-center">
-              Don't have account? <Link href="/register">Create Account</Link>
+              Don't have account? <Link className="underline hover:text-[#AAAAAA] active:text-[black]" href="/register">Create Account</Link>
             </p>
           </div>
         </div>

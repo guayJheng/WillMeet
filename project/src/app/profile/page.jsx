@@ -1,28 +1,32 @@
 "use client";
 import React from "react";
-import Image from "next/image";
-// import lemonseed from "../../../public/lemonseed";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "../components/Navbar";
 import { signOut } from "next-auth/react";
+import Popup from "../components/Popup";
+import Container from "../components/Container";
 
-function profile() {
+function Profile() {
   const { data: session } = useSession();
+  const [showPopup, setShowPopup] = useState(false)
+  
   return (
-    <main>
+    <Container className=" bg-[#F4F9F9]">
       <Navbar session={session} />
-      <div className="flex justify-center items-center bg-[#F4F9F9] ">
-        <div className="w-[55rem] h-[35rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4] relative ">
+      <div className="m-auto">
+        <div className="flex justify-center items-center">
+        <div className=" w-[55rem] h-[35rem] p-16 rounded-3xl bg-[#CCF2F4] relative ">
           <h3 className="text-5xl mb-4">Profile</h3>
           <hr className="w-full h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
 
           <div className="flex flex-row mt-10">
             <div>
-              {/* <Image
-                className="rounded-full mx-5 "
-                src={lemonseed}
-                width={200}
-              /> */}
+              <p>picture</p>
+              <img className="bg-white p-0.5 rounded w-[2rem] cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
+              onClick={() => setShowPopup(true)}
+              src='/image/editIcon.png' />
+              {showPopup && <Popup onClose={() => setShowPopup(false)}/>}
             </div>
 
             <div className="flex flex-col ml-20">
@@ -45,8 +49,11 @@ function profile() {
           </button>
         </div>
       </div>
-    </main>
+      </div>
+    </Container>
+
+
   );
 }
 
-export default profile;
+export default Profile;

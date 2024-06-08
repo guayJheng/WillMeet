@@ -5,10 +5,10 @@ import Link from "next/link";
 
 function Navbar({ session }) {
   return (
-    <nav className="flex justify-between items-center shadow-md p-5 bg-[#A4EBF3]">
+    <nav className="flex justify-between items-center shadow-md h-[50px] px-5 p-5 bg-[#A4EBF3]">
       <div>
         {!session ? (
-          <Link href="/login">WillMeet</Link>
+          <Link href="/login" className="font-Kaushan text-3xl" >WillMeet</Link>
         ) : (
           <Link href="/mainCalendar">WillMeet</Link>
         )}

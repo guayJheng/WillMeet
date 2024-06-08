@@ -7,7 +7,14 @@ module. exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        'calc-100-minus-50': 'calc(100% - 50px)',
+      },
+    },
+    fontFamily:{
+      Kaushan:["Kaushan Script"]
+    },
   },
   plugins: [],
 };

@@ -13,11 +13,11 @@ function mainCalendar() {
   return (
     <main>
       <Navbar session={session} />
-      <div className="flex justify-between items-stretch h-screen">
-        <div className="w-1/5 p-0">
+      <div className="flex justify-between items-stretch">
+        <div className="w-[15rem] overflow-auto p-0 h-[calc(100vh-50px)]">
           <Menu />
         </div>
-        <div className="flex-1 p-0">
+        <div className="flex-1 p-6 h-sceen">
           <Calendar />
         </div>
       </div>
