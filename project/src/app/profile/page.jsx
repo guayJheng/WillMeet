@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Navbar from "../components/Navbar";
 import { signOut } from "next-auth/react";
-import Popup from "../components/Popup";
+import Popup from "../components/ChangeImagePopup";
 import Container from "../components/Container";
 
 function Profile() {
