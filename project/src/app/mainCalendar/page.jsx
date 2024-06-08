@@ -10,7 +10,6 @@ import Calendar from "../components/Calendar";
 function mainCalendar() {
   const { data: session } = useSession();
   // if (!session) redirect("/login");
-  console.log(session);
   return (
     <main>
       <Navbar session={session} />
