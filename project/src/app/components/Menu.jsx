@@ -40,30 +40,39 @@ function Menu() {
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
       <Link
         href="/mainCalendar"
-        className="bg-white w-full text-2xl text-center"
-      >
+         className="text-2xl text-center">
         {session?.user?.name}&apos;s Calendar
       </Link>
       
-      <img className="bg-white p-0.5 rounded w-[2rem] cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
-        onClick={() => setShowPopup(true)}
-        src='/image/editIcon.png' />
-        {showPopup && <CreategroupPopup onClose={() => setShowPopup(false)}/>}
+      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
 
-      
-      
+      <div className="flex justify-between">
+
+        <div className="text-2xl block text-left ml-10 mb-3">
+          Group
+          </div>
+
+          <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
+        onClick={() => setShowPopup(true)}
+        src='/image/add.png' />
+        {showPopup && <CreategroupPopup onClose={() => setShowPopup(false)}/>}
+      </div>
+
       <div className="grid">
         {groupList &&
           groupList.map((group) => (
             <Link
               key={group._id}
               href={`/groupCalendar/${group._id}`}
-              className="bg-white w-full text-2xl m- text-center"
+              className="text-2xl text-left ml-10"
             >
               {group.groupName}
             </Link>
           ))}
       </div>
+
+      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
+
     </div>
   );
 }
