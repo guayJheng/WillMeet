@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import CreategroupPopup from "./CreateGroupPopup";
+import AddmemberPopup from "./AddmemberPopup"
 
 //ย้ายสร้างgroupไปไว้ในpopup
 
@@ -47,7 +48,6 @@ function Menu() {
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
 
       <div className="flex justify-between">
-
         <div className="text-2xl block text-left ml-10 mb-3">
           Group
           </div>
@@ -71,7 +71,20 @@ function Menu() {
           ))}
       </div>
 
+
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
+
+
+      <div className="flex justify-between">
+        <div className="text-2xl block text-left ml-10 mb-3">
+          Member
+          </div>
+
+          <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
+        onClick={() => setShowPopup(true)}
+        src='/image/add.png' />
+        {showPopup && <AddmemberPopup onClose={() => setShowPopup(false)}/>}
+      </div>
 
     </div>
   );
