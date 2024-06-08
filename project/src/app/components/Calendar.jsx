@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -6,6 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { set } from "mongoose";
 // import { prisma } from "@/lib/prisma";
 
 const Calendar = () => {
@@ -17,9 +18,10 @@ const Calendar = () => {
     start: "",
     end: "",
     allDay: true,
-    userId: session.user.id,
+    userId: session?.user.id,
   });
   const [eventsData, setEventsData] = useState();
+  console.log(eventValues);
 
   const getData = async () => {
     try {
@@ -82,6 +84,10 @@ const Calendar = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    setEventValues({ ...eventValues, userId: session?.user.id });
+  }, [session]);
 
   return (
     <div>
