@@ -2,36 +2,15 @@ import React, { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import CreategroupPopup from "./CreateGroupPopup";
+
+//ย้ายสร้างgroupไปไว้ในpopup
 
 function Menu() {
   const { data: session } = useSession();
-  const [groupData, setGroupData] = useState();
   const [groupList, setGroupList] = useState();
+  const [showPopup, setShowPopup] = useState(false)
 
-  const handleChange = (e) => {
-    setGroupData(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log({ groupName: groupData, userId: session.user.id });
-    try {
-      const res = await fetch("http://localhost:3000/api/createGroupEvent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ groupName: groupData, userId: session.user.id }),
-      });
-      if (!res.ok) {
-        throw new Error("Failed to create group event");
-      }
-      getGroupData();
-      alert("Group event created");
-    } catch (error) {
-      console.log("Error creating group event: ", error);
-    }
-  };
 
   const getGroupData = async () => {
     try {
@@ -65,21 +44,14 @@ function Menu() {
       >
         {session?.user?.name}&apos;s Calendar
       </Link>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Event Name"
-          name="Name"
-          onChange={handleChange}
-          className="bg-white w-full text-2xl m- text-center"
-        ></input>
-        <button
-          type="submit"
-          className="bg-white w-full text-2xl m- text-center"
-        >
-          Create Event
-        </button>
-      </form>
+      
+      <img className="bg-white p-0.5 rounded w-[2rem] cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
+        onClick={() => setShowPopup(true)}
+        src='/image/editIcon.png' />
+        {showPopup && <CreategroupPopup onClose={() => setShowPopup(false)}/>}
+
+      
+      
       <div className="grid">
         {groupList &&
           groupList.map((group) => (
