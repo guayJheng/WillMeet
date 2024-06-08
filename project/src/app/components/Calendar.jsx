@@ -21,7 +21,6 @@ const Calendar = () => {
     userId: session?.user.id,
   });
   const [eventsData, setEventsData] = useState();
-  console.log(eventValues);
 
   const getData = async () => {
     try {

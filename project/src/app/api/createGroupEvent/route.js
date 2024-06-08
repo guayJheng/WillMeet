@@ -41,9 +41,9 @@ export async function POST(req) {
   }
 }
 
-export async function GET(req) {
-const { userId } = await req.json();
+export async function DELETE(req) {
+  const { userId } = await req.json();
   await connectMongoDB();
-  const result = await Group.find({ groupMembers: userId });
-  return NextResponse.json({ result });
+  const result = await Group.find({ groupMembers: userId }).select("groupName");
+  return NextResponse.json(result);
 }
