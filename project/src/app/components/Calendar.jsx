@@ -6,6 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import moment from "moment";
 import { set } from "mongoose";
 
 const Calendar = () => {
@@ -36,7 +37,7 @@ const Calendar = () => {
       const data = await res.json();
       setEventsData(data.events);
     } catch (error) {
-      console.log("Error loading posts: ", error);
+      console.log("Error loading Events: ", error);
     }
   };
   useEffect(() => {
@@ -132,7 +133,7 @@ const Calendar = () => {
   };
 
   const handleRemove = async (eventID) => {
-    alert(eventID);
+    // alert(eventID);
     try {
       const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
         method: "DELETE",
@@ -153,6 +154,32 @@ const Calendar = () => {
       console.log("Error deleting event: ", error);
     }
   };
+  // const currentMonth = (info) => {
+  //   const month = info.view.calendar.currentDataManager.data.currentDate;
+  //   const monthMoment = moment(month).format("M");
+  //   handleCurrentMonth(monthMoment);
+  // };
+
+  // const handleCurrentMonth = async (m) => {
+  //   // alert(m);
+  //   try {
+  //     const res = await fetch("http://localhost:3000/api/currentMonth", {
+  //       method: "POST",
+  //       body: JSON.stringify(m),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (res.ok) {
+  //       const responseData = await res.json();
+  //       alert(responseData.monthMoment);
+  //     } else {
+  //       throw new Error("Failed to get currentMonth");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     setEventValues({ ...eventValues, userId: session?.user.id });
@@ -172,6 +199,7 @@ const Calendar = () => {
         select={handleSelect}
         height="89vh"
         eventClick={handleClick}
+        // datesSet={currentMonth}
       />
       <Modal
         title="Create Event"

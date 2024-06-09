@@ -23,7 +23,7 @@ const GroupCalendarComponents = () => {
     groupId: eventID,
     userId: session?.user.id,
   });
-  // console.log("eiei :", eventValues);
+  console.log("eiei :", eventValues);
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
@@ -88,7 +88,28 @@ const GroupCalendarComponents = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setIsModalVisible(false);
   };
-
+  const handleRemove = async (eventID) => {
+    // alert(eventID);
+    try {
+      const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({ userId: session.user.id, eventId: eventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete Event");
+      }
+      const data = await res.json();
+      alert(data.message);
+      getData();
+      router.refresh();
+    } catch (error) {
+      console.log("Error deleting event: ", error);
+    }
+  };
   useEffect(() => {
     setEventValues({
       ...eventValues,
@@ -125,6 +146,26 @@ const GroupCalendarComponents = () => {
           placeholder="Event Title"
         />
       </Modal>
+      {/* <Modal
+        title="Editing Event"
+        open={editIsModalVisible}
+        // onOk={editHandleOk}
+        onCancel={editHandleCancel}
+        footer={[
+          // <button onClick={editHandleOk}>Submit</button>,
+          // <button onClick={editHandleCancel}>Cancel</button>,
+          <button key="delete" onClick={() => handleRemove(eventID)}>
+            Delete
+          </button>,
+        ]}
+      >
+        <input
+          name="title"
+          onChange={onChangeValues}
+          value={eventValues.title}
+          placeholder="Event Title"
+        />
+      </Modal> */}
     </div>
   );
 };
