@@ -11,7 +11,23 @@ function Popup({ onClose }) {
   const handleChange = (e) => {
     setGroupData(e.target.value);
   };
-
+  const getGroupData = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/createGroupEvent/`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({ userId: session.user.id }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch group data");
+      }
+      const data = await res.json();
+      setGroupList(data);
+      console.log("Group data: ", data);
+    } catch (error) {
+      console.log("Error loading group data: ", error);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ groupName: groupData, userId: session?.user.id });

@@ -3,16 +3,15 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import CreategroupPopup from "./CreateGroupPopup";
-import AddmemberPopup from "./AddmemberPopup"
+import AddmemberPopup from "./AddmemberPopup";
 
 //ย้ายสร้างgroupไปไว้ในpopup
 
 function Menu() {
   const { data: session } = useSession();
   const [groupList, setGroupList] = useState();
-  const [show1stPopup, setShow1stPopup] = useState(false)
-  const [show2ndPopup, setShow2ndPopup] = useState(false)
-
+  const [show1stPopup, setShow1stPopup] = useState(false);
+  const [show2ndPopup, setShow2ndPopup] = useState(false);
 
   const getGroupData = async () => {
     try {
@@ -40,23 +39,23 @@ function Menu() {
 
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
-      <Link
-        href="/mainCalendar"
-         className="text-2xl text-center">
+      <Link href="/mainCalendar" className="text-2xl text-center">
         {session?.user?.name}&apos;s Calendar
       </Link>
-      
-      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
+
+      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
       <div className="flex justify-between">
-        <div className="text-2xl block text-left ml-10 mb-3">
-          Group
-          </div>
+        <div className="text-2xl block text-left ml-10 mb-3">Group</div>
 
-          <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
-        onClick={() => setShow1stPopup(true)}
-        src='/image/add.png' />
-        {show1stPopup && <CreategroupPopup onClose={() => setShow1stPopup(false)}/>}
+        <img
+          className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+          onClick={() => setShow1stPopup(true)}
+          src="/image/add.png"
+        />
+        {show1stPopup && (
+          <CreategroupPopup onClose={() => setShow1stPopup(false)} />
+        )}
       </div>
 
       <div className="grid">
@@ -72,21 +71,20 @@ function Menu() {
           ))}
       </div>
 
-
-      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded"/>
-
+      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
       <div className="flex justify-between">
-        <div className="text-2xl block text-left ml-10 mb-3">
-          Member
-          </div>
+        <div className="text-2xl block text-left ml-10 mb-3">Member</div>
 
-          <img className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
-        onClick={() => setShow2ndPopup(true)}
-        src='/image/add.png' />
-        {show2ndPopup && <AddmemberPopup onClose={() => setShow2ndPopup(false)}/>}
+        <img
+          className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+          onClick={() => setShow2ndPopup(true)}
+          src="/image/add.png"
+        />
+        {show2ndPopup && (
+          <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
+        )}
       </div>
-
     </div>
   );
 }
