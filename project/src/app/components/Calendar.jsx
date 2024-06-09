@@ -12,6 +12,7 @@ const Calendar = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editIsModalVisible, setEditIsModalVisible] = useState(false);
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -19,6 +20,7 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
+  const [eventID, setEventID] = useState();
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
@@ -84,6 +86,74 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
+  const handleClick = (info) => {
+    showEditModal();
+
+    setEventID(info.event._def.extendedProps._id);
+    console.log(info.event._def.extendedProps._id);
+  };
+
+  const showEditModal = (id, title, start, end) => {
+    setEventValues({ ...eventValues, id, title, start, end });
+    setEditIsModalVisible(true);
+  };
+
+  // const editHandleOk = async () => {
+  //   if (!eventValues.title) {
+  //     alert("Please complete the title");
+  //     return;
+  //   }
+  //   try {
+  //     const res = await fetch(
+  //       `http://localhost:3000/api/event/${eventValues.id}`,
+  //       {
+  //         method: "PUT",
+  //         body: JSON.stringify(eventValues),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (res.ok) {
+  //       getData();
+  //       router.refresh();
+  //     } else {
+  //       throw new Error("Failed to edit the Event");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setEditIsModalVisible(false);
+  // };
+
+  const editHandleCancel = () => {
+    setEventValues({ title: "", start: "", end: "", allDay: true });
+    setEditIsModalVisible(false);
+  };
+
+  const handleRemove = async (eventID) => {
+    alert(eventID);
+    try {
+      const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({ userId: session.user.id, eventId: eventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete Event");
+      }
+      const data = await res.json();
+      alert(data.message);
+      getData();
+      router.refresh();
+    } catch (error) {
+      console.log("Error deleting event: ", error);
+    }
+  };
+
   useEffect(() => {
     setEventValues({ ...eventValues, userId: session?.user.id });
   }, [session]);
@@ -101,12 +171,33 @@ const Calendar = () => {
         selectable={true}
         select={handleSelect}
         height="89vh"
+        eventClick={handleClick}
       />
       <Modal
         title="Create Event"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+      >
+        <input
+          name="title"
+          onChange={onChangeValues}
+          value={eventValues.title}
+          placeholder="Event Title"
+        />
+      </Modal>
+      <Modal
+        title="Editing Event"
+        open={editIsModalVisible}
+        // onOk={editHandleOk}
+        onCancel={editHandleCancel}
+        footer={[
+          // <button onClick={editHandleOk}>Submit</button>,
+          // <button onClick={editHandleCancel}>Cancel</button>,
+          <button key="delete" onClick={() => handleRemove(eventID)}>
+            Delete
+          </button>,
+        ]}
       >
         <input
           name="title"
