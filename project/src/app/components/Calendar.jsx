@@ -40,6 +40,7 @@ const Calendar = () => {
       console.log("Error loading Events: ", error);
     }
   };
+
   useEffect(() => {
     if (session) getData();
   }, [session]);
@@ -57,6 +58,22 @@ const Calendar = () => {
     setIsModalVisible(true);
   };
 
+  const handleCancel = () => {
+    setEventValues({ title: "", start: "", end: "", allDay: true });
+    setIsModalVisible(false);
+  };
+
+  const handleClick = (info) => {
+    showEditModal();
+
+    setEventID(info.event._def.extendedProps._id);
+    console.log(info.event._def.extendedProps._id);
+  };
+
+  const showEditModal = (id, title, start, end) => {
+    setEventValues({ ...eventValues, id, title, start, end });
+    setEditIsModalVisible(true);
+  };
   const handleOk = async () => {
     if (!eventValues.title) {
       alert("Please complete the title");
@@ -82,50 +99,33 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setEventValues({ title: "", start: "", end: "", allDay: true });
-    setIsModalVisible(false);
+  const editHandleOk = async () => {
+    if (!eventValues.title) {
+      alert("Please complete the title");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/event/${eventValues.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(eventValues),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
+        getData();
+        router.refresh();
+      } else {
+        throw new Error("Failed to edit the Event");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setEditIsModalVisible(false);
   };
-
-  const handleClick = (info) => {
-    showEditModal();
-
-    setEventID(info.event._def.extendedProps._id);
-    console.log(info.event._def.extendedProps._id);
-  };
-
-  const showEditModal = (id, title, start, end) => {
-    setEventValues({ ...eventValues, id, title, start, end });
-    setEditIsModalVisible(true);
-  };
-
-  // const editHandleOk = async () => {
-  //   if (!eventValues.title) {
-  //     alert("Please complete the title");
-  //     return;
-  //   }
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:3000/api/event/${eventValues.id}`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify(eventValues),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       getData();
-  //       router.refresh();
-  //     } else {
-  //       throw new Error("Failed to edit the Event");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setEditIsModalVisible(false);
-  // };
 
   const editHandleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
@@ -150,6 +150,7 @@ const Calendar = () => {
       alert(data.message);
       getData();
       router.refresh();
+      setEditIsModalVisible(false);
     } catch (error) {
       console.log("Error deleting event: ", error);
     }
@@ -220,7 +221,7 @@ const Calendar = () => {
         // onOk={editHandleOk}
         onCancel={editHandleCancel}
         footer={[
-          // <button onClick={editHandleOk}>Submit</button>,
+          <button onClick={editHandleOk}>Submit</button>,
           // <button onClick={editHandleCancel}>Cancel</button>,
           <button key="delete" onClick={() => handleRemove(eventID)}>
             Delete

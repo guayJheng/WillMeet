@@ -16,6 +16,7 @@ const GroupCalendarComponents = () => {
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editIsModalVisible, setEditIsModalVisible] = useState(false);
+  // const [yourID, setYourID] = useState({ userId: session?.user.id });
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -24,7 +25,6 @@ const GroupCalendarComponents = () => {
     groupId: eventID,
     userId: session?.user.id,
   });
-  // const eiei = session.user.id;
   // console.log("eieieieieieie: ", eiei);
   // console.log("eiei :", eventValues);
   const [groupEventID, setGroupEventID] = useState();
@@ -92,11 +92,42 @@ const GroupCalendarComponents = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setIsModalVisible(false);
   };
-  const handleClick = (info) => {
+  const handleClick = async (info) => {
     showEditModal();
     setGroupEventID(info.event._def.extendedProps._id);
     console.log("eiei", info.event._def.extendedProps._id);
   };
+  // const handleClick = async (info) => {
+  //   setYourID();
+  //   setGroupEventID(info.event._def.extendedProps._id);
+  //   console.log("wwwwwwwww", yourID);
+  //   console.log(groupEventID);
+  //   try {
+  //     const res = await fetch(`http://localhost:3000/api/checkUserEvents`, {
+  //       method: "DELETE",
+  //       cache: "no-store",
+  //       body: JSON.stringify({ groupEventID: groupEventID }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const eventUserID = await res.json();
+  //     // console.log("yourUserID", yourID);
+
+  //     console.log("eventUserID", eventUserID.isYourUserID.userId);
+  //     // if (yourID !== eventUserID.isYourUserID.userId) {
+  //     // alert("Not your Event.");
+  //     //   // throw new Error("Failed to delete Event");
+  //     // }isYourUserID.userID
+  //     // showEditModal();
+  //     // alert("eiei");
+  //   } catch (error) {
+  //     console.log("Error deleting event: ", error);
+  //   }
+  //   // showEditModal();
+  //   // setGroupEventID(info.event._def.extendedProps._id);
+  //   // console.log("eiei", info.event._def.extendedProps._id);
+  // };
 
   const showEditModal = (id, title, start, end) => {
     setEventValues({ ...eventValues, id, title, start, end });
