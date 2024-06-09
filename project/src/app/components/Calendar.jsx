@@ -14,7 +14,8 @@ const Calendar = () => {
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editIsModalVisible, setEditIsModalVisible] = useState(false);
-  const [eventID, setEventID] = useState();
+  const [selectEventID, setSelectEventID] = useState();
+  const [EventID, setEventID] = useState();
   const [eventsData, setEventsData] = useState();
   const [currentEvent, setCurrentEvent] = useState();
   const [eventValues, setEventValues] = useState({
@@ -24,7 +25,39 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
-  const sessionUser = session?.user?.id;
+  const handleClick = (info) => {
+    showEditModal();
+
+    setEventID(info.event._def.extendedProps._id);
+    console.log(info.event._def.extendedProps._id);
+  };
+
+  const editHandleOk = async () => {
+    // console.log("event ID: ", EventID);
+    if (!eventValues.title) {
+      alert("Please complete the title");
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3000/api/event`, {
+        method: "PUT",
+        body: JSON.stringify({ eventID: EventID, newTitle: eventValues.title }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        alert("Title Edited");
+        getData();
+        router.refresh();
+      } else {
+        throw new Error("Failed to edit the Event");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setEditIsModalVisible(false);
+  };
 
   const currentMonth = async (info) => {
     // console.log("eieiei", sessionUser);
@@ -97,13 +130,6 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
-  const handleClick = (info) => {
-    showEditModal();
-
-    setEventID(info.event._def.extendedProps._id);
-    console.log(info.event._def.extendedProps._id);
-  };
-
   const showEditModal = (id, title, start, end) => {
     setEventValues({ ...eventValues, id, title, start, end });
     setEditIsModalVisible(true);
@@ -134,46 +160,46 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
-  const editHandleOk = async () => {
-    if (!eventValues.title) {
-      alert("Please complete the title");
-      return;
-    }
-    try {
-      const res = await fetch(
-        `http://localhost:3000/api/event/${eventValues.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify(eventValues),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.ok) {
-        getData();
-        router.refresh();
-      } else {
-        throw new Error("Failed to edit the Event");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    setEditIsModalVisible(false);
-  };
+  // const editHandleOk = async () => {
+  //   if (!eventValues.title) {
+  //     alert("Please complete the title");
+  //     return;
+  //   }
+  //   try {
+  //     const res = await fetch(`http://localhost:3000/api/event`, {
+  //       method: "PUT",
+  //       body: JSON.stringify(eventValues),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (res.ok) {
+  //       getData();
+  //       router.refresh();
+  //     } else {
+  //       throw new Error("Failed to edit the Event");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setEditIsModalVisible(false);
+  // };
 
   const editHandleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setEditIsModalVisible(false);
   };
 
-  const handleRemove = async (eventID) => {
+  const handleRemove = async (selectEventID) => {
     // alert(eventID);
     try {
       const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
         method: "DELETE",
         cache: "no-store",
-        body: JSON.stringify({ userId: session.user.id, eventId: eventID }),
+        body: JSON.stringify({
+          userId: session.user.id,
+          eventId: selectEventID,
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -233,7 +259,7 @@ const Calendar = () => {
         footer={[
           <button onClick={editHandleOk}>Submit</button>,
           // <button onClick={editHandleCancel}>Cancel</button>,
-          <button key="delete" onClick={() => handleRemove(eventID)}>
+          <button key="delete" onClick={() => handleRemove(selectEventID)}>
             Delete
           </button>,
         ]}
