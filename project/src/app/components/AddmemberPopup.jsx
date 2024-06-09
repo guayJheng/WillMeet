@@ -26,18 +26,24 @@ function Popup({ onClose }) {
     fetchData(value);
   };
 
-
   //ใส่ปุ่มเพิ่มperm
   const SearchResultList = ({ results }) => {
     return (
       <div>
         {results.map((result, id) => (
-          <div className='py-3 pl-10 text-left'
-          key={id}>{result.name}</div>
+          <div className='py-4 px-10 flex justify-between items-center'
+          key={id}>{result.name}
+          <div>
+            <button type="submit" className=" bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-lg text-xs" >
+              Add
+            </button>
+          </div>
+          </div>
         ))}
       </div>
     );
   };
+  
   return (
     <div className='z-10 fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center'>
       <div className='m-auto w-[30rem] relative py-16 px-10 rounded-3xl bg-[#CCF2F4]'>
