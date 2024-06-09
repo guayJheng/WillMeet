@@ -77,9 +77,15 @@ function Menu() {
       <div>
       <h1>Today's Events</h1>
       <ul>
-        {todayList.map((event, index) => (
+      <ul>
+      {todayList.length > 0 ? (
+        todayList.map((event, index) => (
           <li key={index}>{event.title}</li>
-        ))}
+        ))
+      ) : (
+        <li>No events for today</li>
+      )}
+    </ul>
       </ul>
     </div>
       <p>{eventID}</p>
