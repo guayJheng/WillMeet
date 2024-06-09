@@ -6,11 +6,13 @@ import CreategroupPopup from "./CreateGroupPopup";
 import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
+import moment from 'moment';
 
 function Menu() {
   const { eventID } = useParams();
   const { data: session } = useSession();
   const [groupList, setGroupList] = useState();
+  const [todayList, setTodaylist] = useState([]);
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
@@ -39,6 +41,32 @@ function Menu() {
     }
   }, [session]);
 
+  const getTodaylist = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/allEvent/`, {
+        method: "GET",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch Today data");
+      }
+      const data = await res.json();
+      const today = moment().format("DD/MM/YYYY");
+      const todayEvents = data.filter(event => moment(event.start).format("DD/MM/YYYY") === today);
+      
+      setTodaylist(todayEvents);
+      console.log("Today's events: ", todayEvents);
+    } catch (error) {
+      console.log("Error loading Today's events: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      getTodaylist();
+    }
+  }, [session]);
+
+
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
       <Link href="/mainCalendar" className="text-2xl text-center">
@@ -46,7 +74,14 @@ function Menu() {
       </Link>
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-      <p>กิจกรรมวันนี้</p>
+      <div>
+      <h1>Today's Events</h1>
+      <ul>
+        {todayList.map((event, index) => (
+          <li key={index}>{event.title}</li>
+        ))}
+      </ul>
+    </div>
       <p>{eventID}</p>
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">

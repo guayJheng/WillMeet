@@ -51,13 +51,7 @@ const Calendar = () => {
       console.log(error);
     }
   };
-  // console.log("cur", currentEvent);
-  const day = moment(new Date()).format("DD/MM/YYYY");
-  const filterDate = currentEvent
-    ? currentEvent.filter((item) => {
-        return day == moment(item.start).format("DD/MM/YYYY");
-      })
-    : [];
+
 
   const getData = async () => {
     // console.log("ss", session.user.id);
@@ -203,20 +197,7 @@ const Calendar = () => {
 
   return (
     <div>
-      <ul>
-        {currentEvent &&
-          currentEvent.map((item, index) => (
-            <li key={index}>
-              {day == moment(item.start).format("DD/MM/YYYY") ? (
-                <>
-                  {moment(item.start).format("DD/MM/YYYY") + "-" + item.title}
-                </>
-              ) : (
-                <></>
-              )}
-            </li>
-          ))}
-      </ul>
+      
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
