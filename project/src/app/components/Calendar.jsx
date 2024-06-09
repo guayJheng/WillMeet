@@ -16,7 +16,7 @@ const Calendar = () => {
   const [editIsModalVisible, setEditIsModalVisible] = useState(false);
   const [eventID, setEventID] = useState();
   const [eventsData, setEventsData] = useState();
-  const [eventsData, setEventsData] = useState();
+  const [currentEvent, setCurrentEvent] = useState();
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -24,6 +24,29 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
+  const currentMonth = async (info) => {
+    console.log(info);
+    const m = info.view.calendar.currentDataManager.data.currentDate;
+    const Month = moment(m).format("M");
+    // console.log({ Month });
+    try {
+      const res = await fetch("http://localhost:3000/api/currentMonth", {
+        method: "POST",
+        body: JSON.stringify({ Month }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentEvent(data.currentM);
+      } else {
+        throw new Error("Failed to get month");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -189,6 +212,10 @@ const Calendar = () => {
 
   return (
     <div>
+      <ul>
+        {currentEvent &&
+          currentEvent.map((item, index) => <li key={index}>{item.title}</li>)}
+      </ul>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{

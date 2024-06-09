@@ -17,19 +17,17 @@ import { NextResponse } from "next/server";
 //     }
 // }
 export async function POST(req) {
-  try {
-    const m = await req.json();
-    console.log(m);
-    const processedData = processData(m);
-    return {
-      status: 200,
-      body: processedData,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      status: 500,
-      body: { error: "Internal server error" },
-    };
-  }
+  const { Month } = await req.json();
+  const month = parseInt(Month);
+  const currentM = await Event.find({
+    $expr: {
+      $eq: [
+        {
+          $month: "$start",
+        },
+        month,
+      ],
+    },
+  });
+  return NextResponse.json({ currentM });
 }
