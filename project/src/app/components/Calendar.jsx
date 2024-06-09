@@ -14,6 +14,9 @@ const Calendar = () => {
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editIsModalVisible, setEditIsModalVisible] = useState(false);
+  const [eventID, setEventID] = useState();
+  const [eventsData, setEventsData] = useState();
+  const [eventsData, setEventsData] = useState();
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -21,8 +24,6 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
-  const [eventID, setEventID] = useState();
-  const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
     try {
@@ -200,7 +201,7 @@ const Calendar = () => {
         select={handleSelect}
         height="89vh"
         eventClick={handleClick}
-        // datesSet={currentMonth}
+        datesSet={currentMonth}
       />
       <Modal
         title="Create Event"
