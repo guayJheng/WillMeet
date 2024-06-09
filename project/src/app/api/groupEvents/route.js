@@ -1,5 +1,6 @@
 import { connectMongoDB } from "../../../../lib/mongodb";
 import groupEvents from "../../../../models/groupEvents";
+import groupData from "../../../../models/groupData";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -28,7 +29,7 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
-  const { groupId } = await req.json;
+  const { groupId } = await req.json();
   await connectMongoDB();
   const groupEvent = await groupEvents.find({ groupId });
   return NextResponse.json({ groupEvent });

@@ -15,6 +15,8 @@ const GroupCalendarComponents = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editIsModalVisible, setEditIsModalVisible] = useState(false);
+  // const [yourID, setYourID] = useState({ userId: session?.user.id });
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -23,7 +25,9 @@ const GroupCalendarComponents = () => {
     groupId: eventID,
     userId: session?.user.id,
   });
+  // console.log("eieieieieieie: ", eiei);
   // console.log("eiei :", eventValues);
+  const [groupEventID, setGroupEventID] = useState();
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
@@ -31,7 +35,7 @@ const GroupCalendarComponents = () => {
       const res = await fetch(`http://localhost:3000/api/groupEvents`, {
         method: "DELETE",
         cache: "no-store",
-        body: JSON.stringify({ groupId: eventID }),
+        body: JSON.stringify({ userId: session.user.id, groupId: eventID }),
       });
       if (!res.ok) {
         throw new Error("Failed to fetch Events");
@@ -88,7 +92,103 @@ const GroupCalendarComponents = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setIsModalVisible(false);
   };
+  const handleClick = async (info) => {
+    showEditModal();
+    setGroupEventID(info.event._def.extendedProps._id);
+    console.log("eiei", info.event._def.extendedProps._id);
+  };
+  // const handleClick = async (info) => {
+  //   setYourID();
+  //   setGroupEventID(info.event._def.extendedProps._id);
+  //   console.log("wwwwwwwww", yourID);
+  //   console.log(groupEventID);
+  //   try {
+  //     const res = await fetch(`http://localhost:3000/api/checkUserEvents`, {
+  //       method: "DELETE",
+  //       cache: "no-store",
+  //       body: JSON.stringify({ groupEventID: groupEventID }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const eventUserID = await res.json();
+  //     // console.log("yourUserID", yourID);
 
+  //     console.log("eventUserID", eventUserID.isYourUserID.userId);
+  //     // if (yourID !== eventUserID.isYourUserID.userId) {
+  //     // alert("Not your Event.");
+  //     //   // throw new Error("Failed to delete Event");
+  //     // }isYourUserID.userID
+  //     // showEditModal();
+  //     // alert("eiei");
+  //   } catch (error) {
+  //     console.log("Error deleting event: ", error);
+  //   }
+  //   // showEditModal();
+  //   // setGroupEventID(info.event._def.extendedProps._id);
+  //   // console.log("eiei", info.event._def.extendedProps._id);
+  // };
+
+  const showEditModal = (id, title, start, end) => {
+    setEventValues({ ...eventValues, id, title, start, end });
+    setEditIsModalVisible(true);
+  };
+
+  // const editHandleOk = async () => {
+  //   if (!eventValues.title) {
+  //     alert("Please complete the title");
+  //     return;
+  //   }
+  //   try {
+  //     const res = await fetch(
+  //       `http://localhost:3000/api/event/${eventValues.id}`,
+  //       {
+  //         method: "PUT",
+  //         body: JSON.stringify(eventValues),
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (res.ok) {
+  //       getData();
+  //       router.refresh();
+  //     } else {
+  //       throw new Error("Failed to edit the Event");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setEditIsModalVisible(false);
+  // };
+  const editHandleCancel = () => {
+    setEventValues({ title: "", start: "", end: "", allDay: true });
+    setEditIsModalVisible(false);
+  };
+  const handleRemove = async (groupEventID) => {
+    // alert(eventID);
+    try {
+      const res = await fetch(`http://localhost:3000/api/deleteGroupEvent`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({
+          groupEventID: groupEventID,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete Event");
+      }
+      const data = await res.json();
+      alert(data.message);
+      getData();
+      router.refresh();
+    } catch (error) {
+      console.log("Error deleting event: ", error);
+    }
+  };
   useEffect(() => {
     setEventValues({
       ...eventValues,
@@ -111,12 +211,33 @@ const GroupCalendarComponents = () => {
         selectable={true}
         select={handleSelect}
         height="89vh"
+        eventClick={handleClick}
       />
       <Modal
         title="Create Event"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+      >
+        <input
+          name="title"
+          onChange={onChangeValues}
+          value={eventValues.title}
+          placeholder="Event Title"
+        />
+      </Modal>
+      <Modal
+        title="Editing Event"
+        open={editIsModalVisible}
+        // onOk={editHandleOk}
+        onCancel={editHandleCancel}
+        footer={[
+          // <button onClick={editHandleOk}>Submit</button>,
+          // <button onClick={editHandleCancel}>Cancel</button>,
+          <button key="delete" onClick={() => handleRemove(groupEventID)}>
+            Delete
+          </button>,
+        ]}
       >
         <input
           name="title"

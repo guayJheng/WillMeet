@@ -44,7 +44,8 @@ function Menu() {
       </Link>
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-
+      <p>กิจกรรมวันนี้</p>
+      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
         <div className="text-2xl block text-left ml-10 mb-3">Group</div>
 

@@ -6,6 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import moment from "moment";
 import { set } from "mongoose";
 
 const Calendar = () => {
@@ -13,6 +14,9 @@ const Calendar = () => {
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editIsModalVisible, setEditIsModalVisible] = useState(false);
+  const [eventID, setEventID] = useState();
+  const [eventsData, setEventsData] = useState();
+  const [currentEvent, setCurrentEvent] = useState();
   const [eventValues, setEventValues] = useState({
     title: "",
     start: "",
@@ -20,8 +24,30 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
-  const [eventID, setEventID] = useState();
-  const [eventsData, setEventsData] = useState();
+  const currentMonth = async (info) => {
+    // console.log(info);
+    const m = info.view.calendar.currentDataManager.data.currentDate;
+    const Month = moment(m).format("M");
+    // console.log({ Month });
+    try {
+      const res = await fetch("http://localhost:3000/api/currentMonth", {
+        method: "POST",
+        body: JSON.stringify({ Month, userId: session?.user.id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentEvent(data.currentM);
+        // console.log(data.currentM);
+      } else {
+        throw new Error("Failed to get month");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -36,9 +62,10 @@ const Calendar = () => {
       const data = await res.json();
       setEventsData(data.events);
     } catch (error) {
-      console.log("Error loading posts: ", error);
+      console.log("Error loading Events: ", error);
     }
   };
+
   useEffect(() => {
     if (session) getData();
   }, [session]);
@@ -56,6 +83,22 @@ const Calendar = () => {
     setIsModalVisible(true);
   };
 
+  const handleCancel = () => {
+    setEventValues({ title: "", start: "", end: "", allDay: true });
+    setIsModalVisible(false);
+  };
+
+  const handleClick = (info) => {
+    showEditModal();
+
+    setEventID(info.event._def.extendedProps._id);
+    console.log(info.event._def.extendedProps._id);
+  };
+
+  const showEditModal = (id, title, start, end) => {
+    setEventValues({ ...eventValues, id, title, start, end });
+    setEditIsModalVisible(true);
+  };
   const handleOk = async () => {
     if (!eventValues.title) {
       alert("Please complete the title");
@@ -81,50 +124,33 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setEventValues({ title: "", start: "", end: "", allDay: true });
-    setIsModalVisible(false);
+  const editHandleOk = async () => {
+    if (!eventValues.title) {
+      alert("Please complete the title");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/event/${eventValues.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(eventValues),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
+        getData();
+        router.refresh();
+      } else {
+        throw new Error("Failed to edit the Event");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setEditIsModalVisible(false);
   };
-
-  const handleClick = (info) => {
-    showEditModal();
-
-    setEventID(info.event._def.extendedProps._id);
-    console.log(info.event._def.extendedProps._id);
-  };
-
-  const showEditModal = (id, title, start, end) => {
-    setEventValues({ ...eventValues, id, title, start, end });
-    setEditIsModalVisible(true);
-  };
-
-  // const editHandleOk = async () => {
-  //   if (!eventValues.title) {
-  //     alert("Please complete the title");
-  //     return;
-  //   }
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:3000/api/event/${eventValues.id}`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify(eventValues),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       getData();
-  //       router.refresh();
-  //     } else {
-  //       throw new Error("Failed to edit the Event");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setEditIsModalVisible(false);
-  // };
 
   const editHandleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
@@ -132,7 +158,7 @@ const Calendar = () => {
   };
 
   const handleRemove = async (eventID) => {
-    alert(eventID);
+    // alert(eventID);
     try {
       const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
         method: "DELETE",
@@ -149,6 +175,7 @@ const Calendar = () => {
       alert(data.message);
       getData();
       router.refresh();
+      setEditIsModalVisible(false);
     } catch (error) {
       console.log("Error deleting event: ", error);
     }
@@ -160,6 +187,10 @@ const Calendar = () => {
 
   return (
     <div>
+      <ul>
+        {currentEvent &&
+          currentEvent.map((item, index) => <li key={index}>{item.title}</li>)}
+      </ul>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -172,6 +203,7 @@ const Calendar = () => {
         select={handleSelect}
         height="89vh"
         eventClick={handleClick}
+        datesSet={currentMonth}
       />
       <Modal
         title="Create Event"
@@ -192,7 +224,7 @@ const Calendar = () => {
         // onOk={editHandleOk}
         onCancel={editHandleCancel}
         footer={[
-          // <button onClick={editHandleOk}>Submit</button>,
+          <button onClick={editHandleOk}>Submit</button>,
           // <button onClick={editHandleCancel}>Cancel</button>,
           <button key="delete" onClick={() => handleRemove(eventID)}>
             Delete
