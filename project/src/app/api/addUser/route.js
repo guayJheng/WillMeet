@@ -3,9 +3,8 @@ import user from "../../../../models/user";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
-  const { name } = req.json();
+const url = new URL(req.url);
   await connectMongoDB();
-  const username = await user.findMany({ name: name });
-  console.log(username);
-  return NextResponse.json({ username });
+  const newUser = await user.find();
+  return NextResponse.json( newUser );
 }
