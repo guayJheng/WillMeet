@@ -16,15 +16,27 @@ export async function POST(req) {
     );
   }
 }
-export async function PUT(req, { params }) {
-  const { id } = params;
-  const { title } = await req.json();
+
+export async function PUT(req) {
+  const { eventID, newTitle } = await req.json();
+  console.log("kikikikikik", { eventID, newTitle });
 
   try {
     await connectMongoDB();
-    await Event.findOneAndUpdate({ _id: id }, { title }, { new: true });
+    const updatedEvent = await Event.findOneAndUpdate(
+      { _id: eventID },
+      { title: newTitle },
+      { new: true }
+    );
 
-    return NextResponse.json({ message: "Event updated." }, { status: 200 });
+    if (updatedEvent) {
+      return NextResponse.json({ message: "Event updated." }, { status: 200 });
+    } else {
+      return NextResponse.json(
+        { message: "Event not found." },
+        { status: 404 }
+      );
+    }
   } catch (error) {
     console.log(error);
     return NextResponse.json(
@@ -33,6 +45,24 @@ export async function PUT(req, { params }) {
     );
   }
 }
+
+// export async function PUT(req, { params }) {
+//   const { id } = params;
+//   const { title } = await req.json();
+
+//   try {
+//     await connectMongoDB();
+//     await Event.findOneAndUpdate({ _id: id }, { title }, { new: true });
+
+//     return NextResponse.json({ message: "Event updated." }, { status: 200 });
+//   } catch (error) {
+//     console.log(error);
+//     return NextResponse.json(
+//       { message: "An error occurred while updating the event." },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 export async function DELETE(req) {
   const { userId } = await req.json();
