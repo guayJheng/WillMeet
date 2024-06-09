@@ -7,6 +7,7 @@ import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
 import moment from 'moment';
+import { Modal, Space } from 'antd';
 
 function Menu() {
   const { eventID } = useParams();
@@ -15,6 +16,7 @@ function Menu() {
   const [todayList, setTodaylist] = useState([]);
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
+  const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
 
   const getGroupData = async () => {
@@ -66,6 +68,21 @@ function Menu() {
     }
   }, [session]);
 
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Are you sure leave this group?',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
 
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
@@ -83,7 +100,7 @@ function Menu() {
           <li key={index}>{event.title}</li>
         ))
       ) : (
-        <li>No events for today</li>
+        <li>No events for this month</li>
       )}
     </ul>
       </ul>
@@ -103,18 +120,27 @@ function Menu() {
         )}
       </div>
 
-      <div className="grid">
+      <div className=" text-left ml-10">
         {groupList &&
           groupList.map((group) => (
+            <div className="group flex justify-between">
             <Link
               key={group._id}
               href={`/groupCalendar/${group._id}`}
-              className="text-2xl text-left ml-10"
+              className="text-2xl"
             >
               {group.groupName}
             </Link>
+            <img
+            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+            onClick={showDeleteConfirm}
+            src="/image/optionIcon.png"
+          />
+            </div>
           ))}
       </div>
+
+
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
@@ -128,24 +154,6 @@ function Menu() {
         />
         {show2ndPopup && (
           <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
-        )}
-      </div>
-
-      <div>
-        <div className="group flex justify-between ">
-          <div className="ml-10">a</div>
-
-          <img
-            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-            onClick={() => setShowshowDeleteOption((prev) => !prev)}
-            src="/image/optionIcon.png"
-          />
-        </div>
-
-        {showDeleteOption && (
-          <span className="absolute left-70 z-10">
-            <DeleteOption />
-          </span>
         )}
       </div>
     </div>
