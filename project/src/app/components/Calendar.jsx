@@ -52,10 +52,10 @@ const Calendar = () => {
     }
   };
   // console.log("cur", currentEvent);
-  const d = moment(new Date()).format("DD/MM/YYYY");
+  const day = moment(new Date()).format("DD/MM/YYYY");
   const filterDate = currentEvent
     ? currentEvent.filter((item) => {
-        return d == moment(item.start).format("DD/MM/YYYY");
+        return day == moment(item.start).format("DD/MM/YYYY");
       })
     : [];
 
@@ -207,7 +207,7 @@ const Calendar = () => {
         {currentEvent &&
           currentEvent.map((item, index) => (
             <li key={index}>
-              {d == moment(item.start).format("DD/MM/YYYY") ? (
+              {day == moment(item.start).format("DD/MM/YYYY") ? (
                 <>
                   {moment(item.start).format("DD/MM/YYYY") + "-" + item.title}
                 </>
