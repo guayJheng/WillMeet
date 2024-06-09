@@ -7,8 +7,6 @@ import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
 
-//ย้ายสร้างgroupไปไว้ในpopup
-
 function Menu() {
   const { eventID } = useParams();
   const { data: session } = useSession();
