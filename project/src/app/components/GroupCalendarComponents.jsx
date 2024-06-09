@@ -6,9 +6,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+
 import { set } from "mongoose";
 
-const Calendar = () => {
+const GroupCalendarComponents = () => {
+  const { eventID } = useParams();
   const router = useRouter();
   const { data: session } = useSession();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -17,13 +20,14 @@ const Calendar = () => {
     start: "",
     end: "",
     allDay: true,
+    groupId: { eventID },
     userId: session?.user.id,
   });
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/event`, {
+      const res = await fetch(`http://localhost:3000/api/groupEvents`, {
         method: "DELETE",
         cache: "no-store",
         body: JSON.stringify({ userId: session.user.id }),
@@ -60,7 +64,7 @@ const Calendar = () => {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3000/api/event", {
+      const res = await fetch("http://localhost:3000/api/groupEvents", {
         method: "POST",
         body: JSON.stringify(eventValues),
         headers: {
@@ -87,9 +91,10 @@ const Calendar = () => {
   useEffect(() => {
     setEventValues({ ...eventValues, userId: session?.user.id });
   }, [session]);
-
   return (
     <div>
+      <p>{eventID}</p>
+      <p>eiei</p>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -119,4 +124,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default GroupCalendarComponents;
