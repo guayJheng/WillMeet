@@ -25,14 +25,14 @@ const Calendar = () => {
     userId: session?.user.id,
   });
   const currentMonth = async (info) => {
-    console.log(info);
+    // console.log(info);
     const m = info.view.calendar.currentDataManager.data.currentDate;
     const Month = moment(m).format("M");
     // console.log({ Month });
     try {
       const res = await fetch("http://localhost:3000/api/currentMonth", {
         method: "POST",
-        body: JSON.stringify({ Month }),
+        body: JSON.stringify({ Month, userId: session?.user.id }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -40,6 +40,7 @@ const Calendar = () => {
       if (res.ok) {
         const data = await res.json();
         setCurrentEvent(data.currentM);
+        // console.log(data.currentM);
       } else {
         throw new Error("Failed to get month");
       }
@@ -179,32 +180,6 @@ const Calendar = () => {
       console.log("Error deleting event: ", error);
     }
   };
-  // const currentMonth = (info) => {
-  //   const month = info.view.calendar.currentDataManager.data.currentDate;
-  //   const monthMoment = moment(month).format("M");
-  //   handleCurrentMonth(monthMoment);
-  // };
-
-  // const handleCurrentMonth = async (m) => {
-  //   // alert(m);
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/currentMonth", {
-  //       method: "POST",
-  //       body: JSON.stringify(m),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (res.ok) {
-  //       const responseData = await res.json();
-  //       alert(responseData.monthMoment);
-  //     } else {
-  //       throw new Error("Failed to get currentMonth");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     setEventValues({ ...eventValues, userId: session?.user.id });

@@ -17,9 +17,10 @@ import { NextResponse } from "next/server";
 //     }
 // }
 export async function POST(req) {
-  const { Month } = await req.json();
+  const { Month, userId } = await req.json();
   const month = parseInt(Month);
   const currentM = await Event.find({
+    // userId: userId,
     $expr: {
       $eq: [
         {
