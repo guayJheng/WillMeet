@@ -20,9 +20,10 @@ const GroupCalendarComponents = () => {
     start: "",
     end: "",
     allDay: true,
-    groupId: { eventID },
+    groupId: eventID,
     userId: session?.user.id,
   });
+  console.log("eiei :", eventValues);
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
@@ -89,12 +90,16 @@ const GroupCalendarComponents = () => {
   };
 
   useEffect(() => {
-    setEventValues({ ...eventValues, userId: session?.user.id });
+    setEventValues({
+      ...eventValues,
+      // groupId,
+      userId: session?.user.id,
+    });
   }, [session]);
   return (
     <div>
-      <p>{eventID}</p>
-      <p>eiei</p>
+      <p>eventID : {eventID}</p>
+
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
