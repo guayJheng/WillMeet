@@ -6,7 +6,7 @@ function Popup({ onClose }) {
 
   //apiปลอม
   const fetchData = (value) => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch("http://localhost:3000/api/addUser")
       .then((response) => response.json())
       .then((json) => {
         const filteredResults = json.filter((user) => {
