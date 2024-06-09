@@ -7,18 +7,18 @@ function Popup({ onClose }) {
   //apiปลอม
 
   const fetchData = (value) => {
-    fetch("http://localhost:3000/api/addUser")
+    fetch("/api/addUser")
       .then((response) => response.json())
       .then((json) => {
-        // const filteredResults = json.filter((user) => {
-        //   return (
-        //     value &&
-        //     user &&
-        //     user.name &&
-        //     user.name.toLowerCase().includes(value.toLowerCase())
-        //   );
-        // });
-        setResults(json);
+         const filteredResults = json.filter((user) => {
+           return (
+             value &&
+             user &&
+             user.name &&
+             user.name.toLowerCase().includes(value.toLowerCase())
+           );
+         });
+        setResults(filteredResults);
       });
   };
 
@@ -32,8 +32,13 @@ function Popup({ onClose }) {
     return (
       <div>
         {results.map((result, id) => (
-          <div className="py-3 pl-10 text-left" key={id}>
-            {result.name}
+          <div className='py-4 px-10 flex justify-between items-center' 
+          key={id}>{result.name}
+          <div>
+            <button type="submit" className=" bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-lg text-xs" >
+              Add
+            </button>
+          </div>
           </div>
         ))}
       </div>
