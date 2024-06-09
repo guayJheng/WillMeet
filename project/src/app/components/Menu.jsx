@@ -6,7 +6,7 @@ import CreategroupPopup from "./CreateGroupPopup";
 import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
-import moment from 'moment';
+import moment from "moment";
 
 function Menu() {
   const { eventID } = useParams();
@@ -51,8 +51,10 @@ function Menu() {
       }
       const data = await res.json();
       const today = moment().format("DD/MM/YYYY");
-      const todayEvents = data.filter(event => moment(event.start).format("DD/MM/YYYY") === today);
-      
+      const todayEvents = data.filter(
+        (event) => moment(event.start).format("DD/MM/YYYY") === today
+      );
+
       setTodaylist(todayEvents);
       console.log("Today's events: ", todayEvents);
     } catch (error) {
@@ -66,7 +68,6 @@ function Menu() {
     }
   }, [session]);
 
-
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
       <Link href="/mainCalendar" className="text-2xl text-center">
@@ -75,20 +76,20 @@ function Menu() {
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div>
-      <h1>Today's Events</h1>
-      <ul>
-      <ul>
-      {todayList.length > 0 ? (
-        todayList.map((event, index) => (
-          <li key={index}>{event.title}</li>
-        ))
-      ) : (
-        <li>No events for today</li>
-      )}
-    </ul>
-      </ul>
-    </div>
-      <p>{eventID}</p>
+        <h1>Today's Events</h1>
+        <ul>
+          <ul>
+            {todayList.length > 0 ? (
+              todayList.map((event, index) => (
+                <li key={index}>{event.title}</li>
+              ))
+            ) : (
+              <li>No events for today</li>
+            )}
+          </ul>
+        </ul>
+      </div>
+      {/* <p>{eventID}</p> */}
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
         <div className="text-2xl block text-left ml-10 mb-3">Group</div>
@@ -117,35 +118,40 @@ function Menu() {
       </div>
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-
-      <div className="flex justify-between">
-        <div className="text-2xl block text-left ml-10 mb-3">Member</div>
-
-        <img
-          className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
-          onClick={() => setShow2ndPopup(true)}
-          src="/image/add.png"
-        />
-        {show2ndPopup && (
-          <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
-        )}
-      </div>
-
       <div>
-        <div className="group flex justify-between ">
-          <div className="ml-10">a</div>
+        {eventID ? (
+          <div>
+            <div className="flex justify-between">
+              <div className="text-2xl block text-left ml-10 mb-3">Member</div>
+              <img
+                className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+                onClick={() => setShow2ndPopup(true)}
+                src="/image/add.png"
+              />
+              {show2ndPopup && (
+                <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
+              )}
+            </div>
+            <div>
+              <div className="group flex justify-between ">
+                <div className="ml-10">a</div>
 
-          <img
-            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-            onClick={() => setShowshowDeleteOption((prev) => !prev)}
-            src="/image/optionIcon.png"
-          />
-        </div>
+                <img
+                  className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+                  onClick={() => setShowshowDeleteOption((prev) => !prev)}
+                  src="/image/optionIcon.png"
+                />
+              </div>
 
-        {showDeleteOption && (
-          <span className="absolute left-70 z-10">
-            <DeleteOption />
-          </span>
+              {showDeleteOption && (
+                <span className="absolute left-70 z-10">
+                  <DeleteOption />
+                </span>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div></div>
         )}
       </div>
     </div>
