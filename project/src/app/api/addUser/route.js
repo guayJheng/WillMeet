@@ -36,8 +36,8 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-  const url = new URL(req.url);
+const url = new URL(req.url);
   await connectMongoDB();
   const newUser = await user.find();
-  return NextResponse.json(newUser);
+  return NextResponse.json( newUser );
 }
