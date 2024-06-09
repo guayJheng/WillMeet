@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { useParams } from "next/navigation";
 
 function Popup({ onClose }) {
+  const { eventID } = useParams();
   const [input, setInput] = useState("");
   const [results, setResults] = useState([]);
+  const [eventValues, setEventValues] = useState({
+    groupId: eventID,
+  });
 
   //apiปลอม
 
@@ -27,18 +32,44 @@ function Popup({ onClose }) {
     fetchData(value);
   };
 
-  //ใส่ปุ่มเพิ่มperm
+  const onClickValue = async (user) => {
+    console.log("selected user:", user);
+    try {
+      const res = await fetch("http://localhost:3000/api/addUser", {
+        method: "POST",
+        body: JSON.stringify({ userData: [user], groupId: eventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        alert("User Added");
+      } else {
+        throw new Error("Failed to Add User");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const SearchResultList = ({ results }) => {
     return (
       <div>
         {results.map((result, id) => (
-          <div className='py-4 px-10 flex justify-between items-center' 
-          key={id}>{result.name}
-          <div>
-            <button type="submit" className=" bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-lg text-xs" >
-              Add
-            </button>
-          </div>
+          <div
+            className="py-4 px-10 flex justify-between items-center"
+            key={id}
+          >
+            {result.name}
+            <div>
+              <button
+                type="button"
+                onClick={() => onClickValue(result)}
+                className="bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border py-2 px-3 rounded-lg text-xs"
+              >
+                Add
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -101,5 +132,4 @@ function Popup({ onClose }) {
     </div>
   );
 }
-
 export default Popup;
