@@ -28,8 +28,8 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
-  const { userId } = await req.json();
+  const { groupId } = await req.json;
   await connectMongoDB();
-  const groupEvent = await groupEvents.find({ userId });
+  const groupEvent = await groupEvents.find({ groupId });
   return NextResponse.json({ groupEvent });
 }

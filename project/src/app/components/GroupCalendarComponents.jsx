@@ -23,7 +23,7 @@ const GroupCalendarComponents = () => {
     groupId: eventID,
     userId: session?.user.id,
   });
-  console.log("eiei :", eventValues);
+  // console.log("eiei :", eventValues);
   const [eventsData, setEventsData] = useState();
 
   const getData = async () => {
@@ -31,13 +31,13 @@ const GroupCalendarComponents = () => {
       const res = await fetch(`http://localhost:3000/api/groupEvents`, {
         method: "DELETE",
         cache: "no-store",
-        body: JSON.stringify({ userId: session.user.id }),
+        body: JSON.stringify({ groupId: eventID }),
       });
       if (!res.ok) {
         throw new Error("Failed to fetch Events");
       }
       const data = await res.json();
-      setEventsData(data.events);
+      setEventsData(data.groupEvent);
     } catch (error) {
       console.log("Error loading posts: ", error);
     }
