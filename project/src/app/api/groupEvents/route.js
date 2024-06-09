@@ -1,6 +1,6 @@
 import { connectMongoDB } from "../../../../lib/mongodb";
 import groupEvents from "../../../../models/groupEvents";
-import groupData from "../../../../models/groupData";
+import User from "../../../../models/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -29,8 +29,26 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
-  const { groupId } = await req.json();
+  const { userId, groupId } = await req.json();
   await connectMongoDB();
-  const groupEvent = await groupEvents.find({ groupId });
+  const groupEvent = await groupEvents.find({ groupId, userId });
+  console.log("eiei", groupEvent);
   return NextResponse.json({ groupEvent });
 }
+
+// export async function DELETE(req) {
+//   const { userId, groupId } = await req.json();
+//   await connectMongoDB();
+//   const groupEvent = await groupEvents.find({ groupId, userId });
+//   console.log("eiei", groupEvent);
+//   return NextResponse.json({ groupEvent });
+// }
+// export async function DELETE(req) {
+//   const { userId, groupId } = await req.json();
+//   await connectMongoDB();
+//   const groupEvent = await groupEvents.find({ groupId });
+//   const userData = await User.findById(userId);
+//   // console.log("GroupEvent ", groupEvent);
+//   // console.log("userData", userData);
+//   return NextResponse.json({ groupEvent, userData });
+// }

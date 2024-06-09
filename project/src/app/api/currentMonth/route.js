@@ -20,7 +20,7 @@ export async function POST(req) {
   const { Month, userId } = await req.json();
   const month = parseInt(Month);
   const currentM = await Event.find({
-    // userId: userId,
+    userId: userId,
     $expr: {
       $eq: [
         {

@@ -16,31 +16,24 @@ export async function POST(req) {
     );
   }
 }
-export async function PUT(req) {
-  const { id, title, start, end, allDay = true, userId } = await req.json();
+export async function PUT(req, { params }) {
+  const { id } = params;
+  const { title } = await req.json();
+
   try {
     await connectMongoDB();
-    const event = await Event.findByIdAndUpdate(id, {
-      title,
-      start,
-      end,
-      allDay,
-      userId,
-    });
-    if (!event) {
-      return NextResponse.json(
-        { message: "Event not found." },
-        { status: 404 }
-      );
-    }
+    await Event.findOneAndUpdate({ _id: id }, { title }, { new: true });
+
     return NextResponse.json({ message: "Event updated." }, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { message: "An error occurred while updating the event." },
       { status: 500 }
     );
   }
 }
+
 export async function DELETE(req) {
   const { userId } = await req.json();
   await connectMongoDB();

@@ -24,23 +24,26 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
+  const sessionUser = session?.user?.id;
+
   const currentMonth = async (info) => {
-    // console.log(info);
+    console.log("eieiei", sessionUser);
+
     const m = info.view.calendar.currentDataManager.data.currentDate;
     const Month = moment(m).format("M");
-    // console.log({ Month });
+
     try {
       const res = await fetch("http://localhost:3000/api/currentMonth", {
         method: "POST",
-        body: JSON.stringify({ Month, userId: session?.user.id }),
+        body: JSON.stringify({ Month }),
         headers: {
           "Content-Type": "application/json",
         },
       });
       if (res.ok) {
         const data = await res.json();
-        setCurrentEvent(data.currentM);
-        // console.log(data.currentM);
+        // setCurrentEvent(data.currentM);
+        console.log(data.currentM);
       } else {
         throw new Error("Failed to get month");
       }
@@ -50,6 +53,8 @@ const Calendar = () => {
   };
 
   const getData = async () => {
+    console.log("ss", session.user.id);
+
     try {
       const res = await fetch(`http://localhost:3000/api/event`, {
         method: "DELETE",
@@ -67,7 +72,10 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    if (session) getData();
+    if (session) {
+      setEventValues((prev) => ({ ...prev, userId: session.user.id }));
+      getData();
+    }
   }, [session]);
 
   const handleSelect = (info) => {
@@ -104,6 +112,7 @@ const Calendar = () => {
       alert("Please complete the title");
       return;
     }
+
     try {
       const res = await fetch("http://localhost:3000/api/event", {
         method: "POST",
