@@ -5,6 +5,7 @@ import { useState } from "react";
 import CreategroupPopup from "./CreateGroupPopup";
 import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
+import DeleteOption from "./deleteOption";
 
 //ย้ายสร้างgroupไปไว้ในpopup
 
@@ -14,6 +15,7 @@ function Menu() {
   const [groupList, setGroupList] = useState();
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
+  const [showDeleteOption, setShowshowDeleteOption] = useState(false);
 
   const getGroupData = async () => {
     try {
@@ -87,6 +89,24 @@ function Menu() {
         />
         {show2ndPopup && (
           <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
+        )}
+      </div>
+
+      <div>
+        <div className="group flex justify-between ">
+          <div className="ml-10">a</div>
+
+          <img
+            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+            onClick={() => setShowshowDeleteOption((prev) => !prev)}
+            src="/image/optionIcon.png"
+          />
+        </div>
+
+        {showDeleteOption && (
+          <span className="absolute left-70 z-10">
+            <DeleteOption />
+          </span>
         )}
       </div>
     </div>

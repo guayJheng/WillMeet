@@ -39,6 +39,7 @@ function Popup({ onClose }) {
       </div>
     );
   };
+
   return (
     <div className="z-10 fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
       <div className="m-auto w-[30rem] relative py-16 px-10 rounded-3xl bg-[#CCF2F4]">
