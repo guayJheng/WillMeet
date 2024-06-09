@@ -10,7 +10,7 @@ function Navbar({ session }) {
         {!session ? (
           <Link href="/login" className="font-Kaushan text-3xl" >WillMeet</Link>
         ) : (
-          <Link href="/mainCalendar">WillMeet</Link>
+          <Link href="/mainCalendar" className="font-Kaushan text-3xl" >WillMeet</Link>
         )}
       </div>
       <ul className="flex space-x-4">

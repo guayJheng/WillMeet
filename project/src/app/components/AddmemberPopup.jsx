@@ -9,13 +9,21 @@ function Popup({ onClose }) {
     groupId: eventID,
   });
 
-  const fetchData = () => {
-    fetch("http://localhost:3000/api/addUser")
-      .then((response) => response.json({ groupId: eventID }))
+  //apiปลอม
+
+  const fetchData = (value) => {
+    fetch("/api/addUser")
+      .then((response) => response.json())
       .then((json) => {
-        setResults(json);
-        console.log("eiei", json);
-        setEventValues(json);
+         const filteredResults = json.filter((user) => {
+           return (
+             value &&
+             user &&
+             user.name &&
+             user.name.toLowerCase().includes(value.toLowerCase())
+           );
+         });
+        setResults(filteredResults);
       });
   };
 
