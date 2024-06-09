@@ -24,15 +24,18 @@ const Calendar = () => {
     allDay: true,
     userId: session?.user.id,
   });
+  const sessionUser = session?.user?.id;
+
   const currentMonth = async (info) => {
-    // console.log(info);
+    // console.log("eieiei", sessionUser);
+
     const m = info.view.calendar.currentDataManager.data.currentDate;
     const Month = moment(m).format("M");
-    // console.log({ Month });
+
     try {
       const res = await fetch("http://localhost:3000/api/currentMonth", {
         method: "POST",
-        body: JSON.stringify({ Month, userId: session?.user.id }),
+        body: JSON.stringify({ Month }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -48,8 +51,17 @@ const Calendar = () => {
       console.log(error);
     }
   };
+  // console.log("cur", currentEvent);
+  const d = moment(new Date()).format("DD/MM/YYYY");
+  const filterDate = currentEvent
+    ? currentEvent.filter((item) => {
+        return d == moment(item.start).format("DD/MM/YYYY");
+      })
+    : [];
 
   const getData = async () => {
+    // console.log("ss", session.user.id);
+
     try {
       const res = await fetch(`http://localhost:3000/api/event`, {
         method: "DELETE",
@@ -67,7 +79,10 @@ const Calendar = () => {
   };
 
   useEffect(() => {
-    if (session) getData();
+    if (session) {
+      setEventValues((prev) => ({ ...prev, userId: session.user.id }));
+      getData();
+    }
   }, [session]);
 
   const handleSelect = (info) => {
@@ -104,6 +119,7 @@ const Calendar = () => {
       alert("Please complete the title");
       return;
     }
+
     try {
       const res = await fetch("http://localhost:3000/api/event", {
         method: "POST",
@@ -189,7 +205,17 @@ const Calendar = () => {
     <div>
       <ul>
         {currentEvent &&
-          currentEvent.map((item, index) => <li key={index}>{item.title}</li>)}
+          currentEvent.map((item, index) => (
+            <li key={index}>
+              {d == moment(item.start).format("DD/MM/YYYY") ? (
+                <>
+                  {moment(item.start).format("DD/MM/YYYY") + "-" + item.title}
+                </>
+              ) : (
+                <></>
+              )}
+            </li>
+          ))}
       </ul>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -230,6 +256,7 @@ const Calendar = () => {
             Delete
           </button>,
         ]}
+        d
       >
         <input
           name="title"

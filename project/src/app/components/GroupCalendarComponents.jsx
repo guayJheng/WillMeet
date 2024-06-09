@@ -88,6 +88,31 @@ const GroupCalendarComponents = () => {
     setIsModalVisible(false);
   };
 
+  // const handleOk = async () => {
+  //   // if (!eventValues.title) {
+  //   //   alert("Please complete the title");
+  //   //   return;
+  //   // }
+  //   try {
+  //     const res = await fetch("http://localhost:3000/api/groupEvents", {
+  //       method: "POST",
+  //       body: JSON.stringify({ userId: session.user.id},eventValues),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     if (res.ok) {
+  //       getData();
+  //       router.refresh();
+  //     } else {
+  //       throw new Error("Failed to create an Event");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setIsModalVisible(false);
+  // };
+
   const handleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setIsModalVisible(false);
@@ -97,6 +122,7 @@ const GroupCalendarComponents = () => {
     setGroupEventID(info.event._def.extendedProps._id);
     console.log("eiei", info.event._def.extendedProps._id);
   };
+
   // const handleClick = async (info) => {
   //   setYourID();
   //   setGroupEventID(info.event._def.extendedProps._id);
@@ -134,35 +160,7 @@ const GroupCalendarComponents = () => {
     setEditIsModalVisible(true);
   };
 
-  // const editHandleOk = async () => {
-  //   if (!eventValues.title) {
-  //     alert("Please complete the title");
-  //     return;
-  //   }
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:3000/api/event/${eventValues.id}`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify(eventValues),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       getData();
-  //       router.refresh();
-  //     } else {
-  //       throw new Error("Failed to edit the Event");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setEditIsModalVisible(false);
-  // };
   const editHandleCancel = () => {
-    setEventValues({ title: "", start: "", end: "", allDay: true });
     setEditIsModalVisible(false);
   };
   const handleRemove = async (groupEventID) => {
@@ -188,6 +186,7 @@ const GroupCalendarComponents = () => {
     } catch (error) {
       console.log("Error deleting event: ", error);
     }
+    setEditIsModalVisible(false);
   };
   useEffect(() => {
     setEventValues({
@@ -198,8 +197,6 @@ const GroupCalendarComponents = () => {
   }, [session]);
   return (
     <div>
-      <p>eventID : {eventID}</p>
-
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -227,24 +224,16 @@ const GroupCalendarComponents = () => {
         />
       </Modal>
       <Modal
-        title="Editing Event"
+        title="Delete Confirmation"
         open={editIsModalVisible}
-        // onOk={editHandleOk}
-        onCancel={editHandleCancel}
         footer={[
-          // <button onClick={editHandleOk}>Submit</button>,
-          // <button onClick={editHandleCancel}>Cancel</button>,
           <button key="delete" onClick={() => handleRemove(groupEventID)}>
             Delete
           </button>,
+          <button onClick={editHandleCancel}>Cancel</button>,
         ]}
       >
-        <input
-          name="title"
-          onChange={onChangeValues}
-          value={eventValues.title}
-          placeholder="Event Title"
-        />
+        <p>Are you sure you want to delete this event?</p>
       </Modal>
     </div>
   );

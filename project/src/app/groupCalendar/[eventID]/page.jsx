@@ -14,7 +14,6 @@ export default function GroupCalendar() {
   // if (!session) redirect("/login");
   return (
     <main>
-      <p>Post: {eventID}</p>;
       <Navbar session={session} />
       <div className="flex justify-between items-stretch">
         <div className="w-[15rem] overflow-auto p-0 h-[calc(100vh-50px)]">
