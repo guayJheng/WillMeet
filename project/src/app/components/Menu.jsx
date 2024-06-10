@@ -49,8 +49,10 @@ function Menu() {
   const getTodaylist = async () => {
     try {
       const res = await fetch(`http://localhost:3000/api/allEvent/`, {
-        method: "GET",
+        method: "DELETE",
+        body: JSON.stringify({ userId: session.user.id }),
       });
+      console.log("res", res);
       if (!res.ok) {
         throw new Error("Failed to fetch Today data");
       }
@@ -59,7 +61,6 @@ function Menu() {
       const todayEvents = data.filter(
         (event) => moment(event.start).format("DD/MM/YYYY") === today
       );
-
       setTodaylist(todayEvents);
       console.log("Today's events: ", todayEvents);
     } catch (error) {
