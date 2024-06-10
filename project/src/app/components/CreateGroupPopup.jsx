@@ -43,7 +43,10 @@ function Popup({ onClose }) {
         throw new Error("Failed to create group event");
       }
       getGroupData();
+      onClose();
       alert("Group event created");
+
+      window.location.reload();
     } catch (error) {
       console.log("Error creating group event: ", error);
     }
@@ -73,8 +76,12 @@ function Popup({ onClose }) {
           ></input>
           <button
             type="submit"
-            className="w-[10rem] m-10 bg-[#AAAAAA]  hover:bg-[#939393] active:bg-[#7B7B7B] text-black border py-2 px-3 rounded-lg text-lg
-          absolute bottom-0 right-0 "
+            className="w-[10rem] m-10 bg-[#A4EBF3] hover:bg-[#FFFFFF] active:bg-[#7B7B7B] text-black border py-2 px-3 rounded-lg text-lg relative inline-flex items-end justify-center group
+  focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800 "
+            style={{
+              borderRadius: "9999px",
+              transition: "all 0.3s ease-in-out",
+            }}
           >
             Submit
           </button>

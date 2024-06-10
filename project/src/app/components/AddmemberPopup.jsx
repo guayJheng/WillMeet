@@ -65,9 +65,9 @@ function Popup({ onClose }) {
               <button
                 type="button"
                 onClick={() => onClickValue(result)}
-                className="bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border py-2 px-3 rounded-lg text-xs"
+                className="w-[2rem] h-[2rem] bg-[#A4EBF3] hover:bg-[#FFFFFF] active:bg-[#7B7B7B] text-black border py-2 px-3 rounded-full text-lg relative inline-flex items-center justify-center group focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
               >
-                Add
+                +
               </button>
             </div>
           </div>
