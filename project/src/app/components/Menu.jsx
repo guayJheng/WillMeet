@@ -118,7 +118,7 @@ function Menu() {
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
       <div className="hover:bg-white py-2 transition ease-in-out delay-50">
-      <Link href="/mainCalendar" className="text-2xl text-center">
+      <Link href="/" className="text-2xl text-center">
         {session?.user?.name}&apos;s Calendar
       </Link>
       </div>

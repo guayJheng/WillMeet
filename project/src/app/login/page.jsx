@@ -16,7 +16,7 @@ function LoginPage() {
   const router = useRouter();
 
   const { data: session } = useSession();
-  if (session) router.replace("mainCalendar");
+  if (session) router.replace("/");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ function LoginPage() {
         return;
       }
 
-      router.replace("mainCalendar");
+      router.replace("/");
     } catch (error) {
       console.log(error);
     }

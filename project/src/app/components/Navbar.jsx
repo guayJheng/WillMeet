@@ -12,7 +12,7 @@ function Navbar({ session }) {
             WillMeet
           </Link>
         ) : (
-          <Link href="/mainCalendar" className="font-Kaushan text-3xl">
+          <Link href="/" className="font-Kaushan text-3xl">
             WillMeet
           </Link>
         )}
