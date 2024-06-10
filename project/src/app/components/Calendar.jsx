@@ -85,7 +85,6 @@ const Calendar = () => {
     }
   };
 
-
   const getData = async () => {
     // console.log("ss", session.user.id);
 
@@ -160,38 +159,12 @@ const Calendar = () => {
     setIsModalVisible(false);
   };
 
-  // const editHandleOk = async () => {
-  //   if (!eventValues.title) {
-  //     alert("Please complete the title");
-  //     return;
-  //   }
-  //   try {
-  //     const res = await fetch(`http://localhost:3000/api/event`, {
-  //       method: "PUT",
-  //       body: JSON.stringify(eventValues),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     if (res.ok) {
-  //       getData();
-  //       router.refresh();
-  //     } else {
-  //       throw new Error("Failed to edit the Event");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   setEditIsModalVisible(false);
-  // };
-
   const editHandleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setEditIsModalVisible(false);
   };
 
   const handleRemove = async (selectEventID) => {
-    // alert(eventID);
     try {
       const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
         method: "DELETE",
@@ -223,7 +196,6 @@ const Calendar = () => {
 
   return (
     <div>
-      
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{

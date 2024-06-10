@@ -15,14 +15,14 @@ function Popup({ onClose }) {
     fetch("/api/addUser")
       .then((response) => response.json())
       .then((json) => {
-         const filteredResults = json.filter((user) => {
-           return (
-             value &&
-             user &&
-             user.name &&
-             user.name.toLowerCase().includes(value.toLowerCase())
-           );
-         });
+        const filteredResults = json.filter((user) => {
+          return (
+            value &&
+            user &&
+            user.name &&
+            user.name.toLowerCase().includes(value.toLowerCase())
+          );
+        });
         setResults(filteredResults);
       });
   };

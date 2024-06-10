@@ -8,9 +8,13 @@ function Navbar({ session }) {
     <nav className="flex justify-between items-center shadow-md h-[50px] px-5 p-5 bg-[#A4EBF3]">
       <div>
         {!session ? (
-          <Link href="/login" className="font-Kaushan text-3xl" >WillMeet</Link>
+          <Link href="/login" className="font-Kaushan text-3xl">
+            WillMeet
+          </Link>
         ) : (
-          <Link href="/mainCalendar" className="font-Kaushan text-3xl" >WillMeet</Link>
+          <Link href="/mainCalendar" className="font-Kaushan text-3xl">
+            WillMeet
+          </Link>
         )}
       </div>
       <ul className="flex space-x-4">
@@ -28,9 +32,11 @@ function Navbar({ session }) {
             <li>
               <Link
                 href="/profile"
-                className="bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2"
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br  group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
               >
-                Profile
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-[#A4EBF3] border-black  rounded-md group-hover:bg-white group-hover:text-[#A4EBF3] text-black ">
+                  Profile
+                </span>
               </Link>
             </li>
           </>
