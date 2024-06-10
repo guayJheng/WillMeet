@@ -1,21 +1,28 @@
 "use client";
 
-import Container from "./components/Container";
 import Navbar from "./components/Navbar";
-
 import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import React from "react";
+import Menu from "./components/Menu";
+import Calendar from "./components/Calendar";
 
-export default function Home() {
+
+function mainCalendar() {
   const { data: session } = useSession();
-
+  // if (!session) redirect("/login");
   return (
     <main>
-      <Container>
-        <Navbar session={session} />
-        <div className="flex-grow text-center p-10">
-          <div className="flex justify-center my-10"></div>
+      <Navbar session={session} />
+      <div className="flex justify-between items-stretch">
+        <div className="w-[15rem] overflow-auto p-0 h-[calc(100vh-50px)]">
+          <Menu />
         </div>
-      </Container>
+        <div className="flex-1 p-6 h-sceen">
+          <Calendar />
+        </div>
+      </div>
     </main>
   );
 }
+export default mainCalendar;

@@ -19,6 +19,7 @@ function RegisterPage() {
   if (session) redirect("/welcome");
 
   const handleSubmit = async (e) => {
+    alert("Registration successful!");
     e.preventDefault();
 
     if (password != confirmPassword) {
@@ -76,8 +77,10 @@ function RegisterPage() {
     <Container>
       <div className="m-auto">
         <div className="flex justify-center items-center ">
-        <div className="w-[30rem] h-[46rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
-        <h3 className="font-Kaushan text-7xl text-center mb-7" >Will Meet</h3>
+          <div className="w-[30rem] h-[39rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
+            <h3 className="font-Kaushan text-7xl text-center mb-7">
+              Will Meet
+            </h3>
             <hr className="my-3" />
             <form onSubmit={handleSubmit}>
               {error && (
@@ -126,7 +129,14 @@ function RegisterPage() {
               </button>
             </form>
             <p className="text-center">
-              Already have account <Link className="underline hover:text-[#AAAAAA] active:text-[black]" href="/login"> Login</Link>
+              Already have account{" "}
+              <Link
+                className="underline hover:text-[#AAAAAA] active:text-[black]"
+                href="/login"
+              >
+                {" "}
+                Login
+              </Link>
             </p>
           </div>
         </div>
