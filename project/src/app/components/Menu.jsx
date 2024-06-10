@@ -18,6 +18,7 @@ function Menu() {
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
+  
 
   const getGroupData = async () => {
     try {
@@ -88,32 +89,36 @@ function Menu() {
 
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
+      <div className="hover:bg-white py-2 transition ease-in-out delay-50">
       <Link href="/mainCalendar" className="text-2xl text-center">
         {session?.user?.name}&apos;s Calendar
       </Link>
+      </div>
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-      <div>
-        <h1>Today's Events</h1>
-        <ul>
+
+      <div className="bg-white py-8">
+        <h1 className="text-xl text-left ml-10 mb-3">Today's Events</h1>
           <ul>
             {todayList.length > 0 ? (
               todayList.map((event, index) => (
-                <li key={index}>{event.title}</li>
+                <li
+                className="text-left ml-10 mb-1"
+                key={index}>{event.title}</li>
               ))
             ) : (
-              <li>No events for today</li>
+              <li>No event for today</li>
             )}
           </ul>
-        </ul>
+        
       </div>
       {/* <p>{eventID}</p> */}
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
-        <div className="text-2xl block text-left ml-10 mb-3">Group</div>
+        <div className="text-xl block text-left ml-10 mb-3">Group</div>
 
         <img
-          className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+          className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
           onClick={() => setShow1stPopup(true)}
           src="/image/add.png"
         />
@@ -122,14 +127,15 @@ function Menu() {
         )}
       </div>
 
-      <div className=" text-left ml-10">
+      <div className=" text-left">
         {groupList &&
           groupList.map((group) => (
-            <div className="group flex justify-between">
+            <div className="group">
+              <div className="flex justify-between  group-hover:bg-white ransition ease-in-out delay-75 ">
             <Link
               key={group._id}
               href={`/groupCalendar/${group._id}`}
-              className="text-2xl"
+              className="ml-10 my-1 "
             >
               {group.groupName}
             </Link>
@@ -138,6 +144,7 @@ function Menu() {
             onClick={showDeleteConfirm}
             src="/image/optionIcon.png"
           />
+            </div>
             </div>
           ))}
       </div>
@@ -149,9 +156,9 @@ function Menu() {
         {eventID ? (
           <div>
             <div className="flex justify-between">
-              <div className="text-2xl block text-left ml-10 mb-3">Member</div>
+              <div className="text-xl block text-left ml-10 mb-3">Member</div>
               <img
-                className="mr-5 mt-1 rounded w-6 h-6 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+                className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
                 onClick={() => setShow2ndPopup(true)}
                 src="/image/add.png"
               />
