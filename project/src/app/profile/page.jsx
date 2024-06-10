@@ -21,13 +21,13 @@ function Profile() {
           <hr className="w-full h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
 
           <div className="flex flex-row mt-10">
-            <div>
+            {/* <div>
               <p>picture</p>
               <img className="bg-white p-0.5 rounded w-[2rem] cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75" 
               onClick={() => setShowPopup(true)}
               src='/image/editIcon.png' />
               {showPopup && <Popup onClose={() => setShowPopup(false)}/>}
-            </div>
+            </div> */}
 
             <div className="flex flex-col ml-20">
               <div className="text-2xl mb-1">
