@@ -24,6 +24,7 @@ const GroupCalendarComponents = () => {
     allDay: true,
     groupId: eventID,
     userId: session?.user.id,
+    userName: session?.user.name,
   });
   // console.log("eieieieieieie: ", eiei);
   // console.log("eiei :", eventValues);
@@ -123,38 +124,6 @@ const GroupCalendarComponents = () => {
     console.log("eiei", info.event._def.extendedProps._id);
   };
 
-  // const handleClick = async (info) => {
-  //   setYourID();
-  //   setGroupEventID(info.event._def.extendedProps._id);
-  //   console.log("wwwwwwwww", yourID);
-  //   console.log(groupEventID);
-  //   try {
-  //     const res = await fetch(`http://localhost:3000/api/checkUserEvents`, {
-  //       method: "DELETE",
-  //       cache: "no-store",
-  //       body: JSON.stringify({ groupEventID: groupEventID }),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     const eventUserID = await res.json();
-  //     // console.log("yourUserID", yourID);
-
-  //     console.log("eventUserID", eventUserID.isYourUserID.userId);
-  //     // if (yourID !== eventUserID.isYourUserID.userId) {
-  //     // alert("Not your Event.");
-  //     //   // throw new Error("Failed to delete Event");
-  //     // }isYourUserID.userID
-  //     // showEditModal();
-  //     // alert("eiei");
-  //   } catch (error) {
-  //     console.log("Error deleting event: ", error);
-  //   }
-  //   // showEditModal();
-  //   // setGroupEventID(info.event._def.extendedProps._id);
-  //   // console.log("eiei", info.event._def.extendedProps._id);
-  // };
-
   const showEditModal = (id, title, start, end) => {
     setEventValues({ ...eventValues, id, title, start, end });
     setEditIsModalVisible(true);
@@ -227,13 +196,42 @@ const GroupCalendarComponents = () => {
         title="Delete Confirmation"
         open={editIsModalVisible}
         footer={[
-          <button key="delete" onClick={() => handleRemove(groupEventID)}>
+          <button
+            key="delete"
+            onClick={() => handleRemove(groupEventID)}
+            className="delete-button"
+          >
             Delete
           </button>,
-          <button onClick={editHandleCancel}>Cancel</button>,
+          <button onClick={editHandleCancel} className="cancel-button">
+            Cancel
+          </button>,
         ]}
       >
         <p>Are you sure you want to delete this event?</p>
+        <style jsx>{`
+          .delete-button {
+            background-color: red;
+            color: white;
+
+            padding: 8px 16px;
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+          }
+
+          .delete-button:hover {
+            background-color: white;
+            color: red;
+          }
+
+          .cancel-button {
+            color: black;
+
+            padding: 8px 16px;
+            border-radius: 9999px;
+            // transition: all 0.3s ease-in-out;
+          }
+        `}</style>
       </Modal>
     </div>
   );

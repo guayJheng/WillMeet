@@ -29,7 +29,7 @@ function LoginPage() {
       });
 
       if (res.error) {
-        setError("Invalid credentials");
+        alert("Invalid");
         return;
       }
 
@@ -43,11 +43,13 @@ function LoginPage() {
     <Container>
       <div className="m-auto">
         <div className="flex justify-center items-center">
-          <div className="w-[30rem] h-[46rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
-            <h3 className="font-Kaushan text-7xl text-center mb-7">Will Meet</h3>
+          <div className="w-[30rem] h-[39rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
+            <h3 className="font-Kaushan text-7xl text-center mb-7">
+              Will Meet
+            </h3>
             <hr className="my-3" />
             <form onSubmit={handleSubmit}>
-            {error && (
+              {error && (
                 <div className="bg-red-500 w-fit text-sm text-white py-1 px-3 rounded-md mt-2">
                   {error}
                 </div>
@@ -77,7 +79,13 @@ function LoginPage() {
               </button>
             </form>
             <p className="text-center">
-              Don't have account? <Link className="underline hover:text-[#AAAAAA] active:text-[black]" href="/register">Create Account</Link>
+              Don't have account?{" "}
+              <Link
+                className="underline hover:text-[#AAAAAA] active:text-[black]"
+                href="/register"
+              >
+                Create Account
+              </Link>
             </p>
           </div>
         </div>

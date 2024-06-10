@@ -231,14 +231,12 @@ const Calendar = () => {
         footer={[
           <button
             onClick={editHandleOk}
-            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-white to-white group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-lg group bg-gradient-to-br from-white to-white group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
             style={{
               background: "#A4EBF3",
-              border: "1px solid black",
               borderRadius: "9999px",
               padding: "10px",
               marginRight: "8px",
-              transition: "all 0.3s ease-in-out",
             }}
           >
             Submit
