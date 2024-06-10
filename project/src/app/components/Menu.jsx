@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import CreategroupPopup from "./CreateGroupPopup";
 import AddmemberPopup from "./AddmemberPopup";
 import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
-import moment from 'moment';
-import { Modal, Space } from 'antd';
+import moment from "moment";
+import { Modal, Space } from "antd";
 
 function Menu() {
   const { eventID } = useParams();
   const { data: session } = useSession();
-  const [groupList, setGroupList] = useState();
+  const [groupList, setGroupList] = useState([]);
   const [todayList, setTodaylist] = useState([]);
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
+  const [results, setResults] = useState([]);
 
   const getGroupData = async () => {
     try {
@@ -25,6 +25,9 @@ function Menu() {
         method: "DELETE",
         cache: "no-store",
         body: JSON.stringify({ userId: session.user.id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       if (!res.ok) {
         throw new Error("Failed to fetch group data");
@@ -70,21 +73,47 @@ function Menu() {
     }
   }, [session]);
 
+  const handleOk = async () => {
+    console.log("selected user:", session.user);
+    try {
+      const res = await fetch("http://localhost:3000/api/removeGroup", {
+        method: "DELETE",
+        body: JSON.stringify({ userId: session.user.id, groupId: eventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        alert("You have exited the group.");
+        window.location.reload();
+      } else {
+        throw new Error("Failed to Remove User");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancel = () => {
+    alert("Cancelled");
+  };
+
   const showDeleteConfirm = () => {
     confirm({
-      title: 'Are you sure leave this group?',
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
+      title: "Are you sure you want to leave this group?",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
       onOk() {
-        console.log('OK');
+        handleOk();
+        console.log("OK");
       },
       onCancel() {
-        console.log('Cancel');
+        handleCancel();
+        console.log("Cancel");
       },
     });
   };
-
 
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
@@ -95,6 +124,7 @@ function Menu() {
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div>
         <h1>Today's Events</h1>
+        {eventID}
         <ul>
           <ul>
             {todayList.length > 0 ? (
@@ -126,23 +156,21 @@ function Menu() {
         {groupList &&
           groupList.map((group) => (
             <div className="group flex justify-between">
-            <Link
-              key={group._id}
-              href={`/groupCalendar/${group._id}`}
-              className="text-2xl"
-            >
-              {group.groupName}
-            </Link>
-            <img
-            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-            onClick={showDeleteConfirm}
-            src="/image/optionIcon.png"
-          />
+              <Link
+                key={group._id}
+                href={`/groupCalendar/${group._id}`}
+                className="text-2xl"
+              >
+                {group.groupName}
+              </Link>
+              <img
+                className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+                onClick={showDeleteConfirm}
+                src="/image/optionIcon.png"
+              />
             </div>
           ))}
       </div>
-
-
 
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div>
