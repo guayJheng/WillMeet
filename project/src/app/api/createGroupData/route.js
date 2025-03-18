@@ -8,10 +8,10 @@ export async function POST(req) {
   try {
     await connectMongoDB();
     await groupData.create({ _id, title, start, end, allday, userId });
-    return NextResponse.json({ message: "Event created." }, { status: 201 });
+    return NextResponse.json({ message: "Group created." }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { message: "An error occured while creating the event." },
+      { message: "An error occured while creating the group." },
       { status: 500 }
     );
   }

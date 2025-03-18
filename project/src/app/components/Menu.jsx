@@ -157,125 +157,130 @@ function Menu() {
     >
       {!session ? (
         <h1>
-          <div className="hover:bg-white py-2 transition ease-in-out delay-50">
+          <div>
             <Link href="/" className="text-2xl text-center">
               Calendar
             </Link>
           </div>
+          <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
         </h1>
       ) : (
-        <div className="hover:bg-white py-2 transition ease-in-out delay-50">
-          <Link href="/" className="text-2xl text-center">
-            {session?.user?.name}&apos;s Calendar
-          </Link>
-        </div>
-      )}
-      {eventID ? (
-        <h1>{group ? `${group.groupName} Calendar` : "Group not found"}</h1>
-      ) : (
-        <h1>Private Calendar</h1>
-      )}
-
-      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-
-      <div className="bg-white py-8">
-        <h1 className="text-xl text-left ml-10 mb-3">Today's Events</h1>
-        <ul>
-          {todayList.length > 0 ? (
-            todayList.map((event, index) => (
-              <li className="text-left ml-10 mb-1" key={index}>
-                {event.title}
-              </li>
-            ))
+        <div>
+          <div className="hover:bg-white py-2 transition ease-in-out delay-50">
+            <Link href="/" className="text-2xl text-center">
+              {session?.user?.name}&apos;s Calendar
+            </Link>
+          </div>
+          {eventID ? (
+            <h1>{group ? `${group.groupName} Calendar` : "Group not found"}</h1>
           ) : (
-            <li>No event for today</li>
+            <h1>Private Calendar</h1>
           )}
-        </ul>
-      </div>
-      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-      <div className="flex justify-between">
-        <div className="text-xl block text-left ml-10 mb-3">Group</div>
 
-        <img
-          className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
-          onClick={() => setShow1stPopup(true)}
-          src="/image/add.png"
-        />
-        {show1stPopup && (
-          <CreategroupPopup onClose={() => setShow1stPopup(false)} />
-        )}
-      </div>
+          <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
-      <div className=" text-left">
-        {groupList &&
-          groupList.map((group) => (
-            <div className="group">
-              <div className="flex justify-between  group-hover:bg-white ransition ease-in-out delay-75 ">
-                <Link
-                  key={group._id}
-                  href={`/groupCalendar/${group._id}`}
-                  className="ml-10 my-1 "
-                >
-                  {group.groupName}
-                </Link>
-                <img
-                  className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-                  onClick={showDeleteConfirm}
-                  src="/image/optionIcon.png"
-                />
-              </div>
-            </div>
-          ))}
-      </div>
-
-      <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
-      <div>
-        {eventID ? (
-          <div>
-            <div className="flex justify-between">
-              <div className="text-xl block text-left ml-10 mb-3">Member</div>
-              <img
-                className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
-                onClick={() => setShow2ndPopup(true)}
-                src="/image/add.png"
-              />
-              {show2ndPopup && (
-                <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
+          <div className="bg-white py-8">
+            <h1 className="text-xl text-left ml-10 mb-3">Today's Events</h1>
+            <ul>
+              {todayList.length > 0 ? (
+                todayList.map((event, index) => (
+                  <li className="text-left ml-10 mb-1" key={index}>
+                    {event.title}
+                  </li>
+                ))
+              ) : (
+                <li>No event for today</li>
               )}
-            </div>
-            <div>
-              <div className="group flex justify-between ">
-                <div className="text-left">
-                  {memberList &&
-                    memberList.map((member) => (
-                      <div className="group">
-                        <div className="flex justify-between  ">
-                          <Link
-                            key={member._id}
-                            href={`/groupCalendar/${member._id}`}
-                            className="ml-10 my-1 "
-                          >
-                            {member.name}
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
+            </ul>
+          </div>
+          <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
+          <div className="flex justify-between">
+            <div className="text-xl block text-left ml-10 mb-3">Group</div>
+
+            <img
+              className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+              onClick={() => setShow1stPopup(true)}
+              src="/image/add.png"
+            />
+            {show1stPopup && (
+              <CreategroupPopup onClose={() => setShow1stPopup(false)} />
+            )}
+          </div>
+
+          <div className=" text-left">
+            {groupList &&
+              groupList.map((group) => (
+                <div className="group">
+                  <div className="flex justify-between  group-hover:bg-white ransition ease-in-out delay-75 ">
+                    <Link
+                      key={group._id}
+                      href={`/groupCalendar/${group._id}`}
+                      className="ml-10 my-1 "
+                    >
+                      {group.groupName}
+                    </Link>
+                    <img
+                      className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+                      onClick={showDeleteConfirm}
+                      src="/image/optionIcon.png"
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
+          <div>
+            {eventID ? (
+              <div>
+                <div className="flex justify-between">
+                  <div className="text-xl block text-left ml-10 mb-3">
+                    Member
+                  </div>
+                  <img
+                    className="mr-5 mt-1 rounded w-5 h-5 cursor-pointer hover:brightness-75 active:brightness-50 transition ease-in-out delay-75"
+                    onClick={() => setShow2ndPopup(true)}
+                    src="/image/add.png"
+                  />
+                  {show2ndPopup && (
+                    <AddmemberPopup onClose={() => setShow2ndPopup(false)} />
+                  )}
+                </div>
+                <div>
+                  <div className="group flex justify-between ">
+                    <div className="text-left">
+                      {memberList &&
+                        memberList.map((member) => (
+                          <div className="group">
+                            <div className="flex justify-between  ">
+                              <Link
+                                key={member._id}
+                                href={`/groupCalendar/${member._id}`}
+                                className="ml-10 my-1 "
+                              >
+                                {member.name}
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
+                  {showDeleteOption && (
+                    <span className="absolute left-70 z-10">
+                      <DeleteOption />
+                    </span>
+                  )}
                 </div>
               </div>
-
-              {showDeleteOption && (
-                <span className="absolute left-70 z-10">
-                  <DeleteOption />
-                </span>
-              )}
-            </div>
+            ) : (
+              <div>
+                <div className="text-left"></div>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <div className="text-left"></div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

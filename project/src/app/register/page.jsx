@@ -77,9 +77,11 @@ function RegisterPage() {
     <Container>
       <div className="m-auto">
         <div className="flex justify-center items-center ">
-          <div className="w-[30rem] h-[39rem] p-16 mt-5 rounded-3xl bg-[#CCF2F4]">
+          <div className="w-[30rem] h-[39rem] p-16 mt-5 rounded-md bg-[#CCF2F4]">
             <h3 className="font-Kaushan text-7xl text-center mb-7">
-              Will Meet
+              <Link href="/" className="font-Kaushan text-7xl text-center mb-7">
+                WillMeet
+              </Link>
             </h3>
             <hr className="my-3" />
             <form onSubmit={handleSubmit}>
@@ -92,7 +94,7 @@ function RegisterPage() {
               <input
                 type="text"
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-full
+                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-md
                 focus:outline-none focus:ring-1 focus:ring-[#7B7B7B]
                 transition ease-in-out delay-150 "
                 placeholder="Email"
@@ -100,7 +102,7 @@ function RegisterPage() {
               <input
                 type="text"
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-full
+                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-md
                 focus:outline-none focus:ring-1 focus:ring-[#7B7B7B]
                 transition ease-in-out delay-150 "
                 placeholder="Username"
@@ -108,7 +110,7 @@ function RegisterPage() {
               <input
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-full
+                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-md
                 focus:outline-none focus:ring-1 focus:ring-[#7B7B7B]
                 transition ease-in-out delay-150 "
                 placeholder="Password"
@@ -116,19 +118,19 @@ function RegisterPage() {
               <input
                 type="password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-full
+                className="w-full bg-[#F4F9F9] border py-4 px-6 mb-2 rounded-md
                 focus:outline-none focus:ring-1 focus:ring-[#7B7B7B]
                 transition ease-in-out delay-150 "
                 placeholder="Confirm Password"
               />
               <button
                 type="submit"
-                className="w-full bg-[#AAAAAA] hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-full text-lg my-2 "
+                className="w-full bg-black text-white hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-md text-lg my-2 "
               >
                 Sign Up
               </button>
             </form>
-            <p className="text-center">
+            <p className="text-center p-[12px]">
               Already have account{" "}
               <Link
                 className="underline hover:text-[#AAAAAA] active:text-[black]"

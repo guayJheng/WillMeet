@@ -14,7 +14,7 @@ function Popup({ onClose }) {
   const getGroupData = async () => {
     try {
       const res = await fetch(`http://localhost:3000/api/createGroupEvent/`, {
-        method: "DELETE",
+        method: "GET",
         cache: "no-store",
         body: JSON.stringify({ userId: session.user.id }),
       });
@@ -44,7 +44,7 @@ function Popup({ onClose }) {
       }
       getGroupData();
       onClose();
-      alert("Group event created");
+      alert("Group Created");
 
       window.location.reload();
     } catch (error) {

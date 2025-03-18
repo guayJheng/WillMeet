@@ -26,11 +26,10 @@ const GroupCalendarComponents = () => {
     userId: session?.user.id,
     userName: session?.user.name,
   });
-  // console.log("eieieieieieie: ", eiei);
-  // console.log("eiei :", eventValues);
+
   const [groupEventID, setGroupEventID] = useState();
   const [eventsData, setEventsData] = useState();
-
+  console.log("Hereeee", eventValues);
   const getData = async () => {
     try {
       const res = await fetch(`http://localhost:3000/api/groupEvents`, {
@@ -52,7 +51,11 @@ const GroupCalendarComponents = () => {
   }, [session]);
 
   const handleSelect = (info) => {
-    showModal();
+    if (session && session.user.id === eventValues.userId) {
+      showModal();
+    } else {
+      console.log("Session user does not match event user ID.");
+    }
     setEventValues({ ...eventValues, start: info.startStr, end: info.endStr });
   };
 
@@ -197,14 +200,56 @@ const GroupCalendarComponents = () => {
         open={editIsModalVisible}
         footer={[
           <button
+            onClick={editHandleCancel}
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md group focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+            style={{
+              backgroundColor: "white",
+              borderColor: "transparent",
+              color: "gray",
+              borderRadius: "8px",
+              padding: "10px",
+              marginLeft: "16px",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "white";
+              e.target.style.color = "black";
+              e.target.style.borderColor = "white";
+              e.target.style.textDecoration = "underline";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "white";
+              e.target.style.color = "gray";
+              e.target.style.borderColor = "white";
+              e.target.style.textDecoration = "none";
+            }}
+          >
+            Cancel
+          </button>,
+          <button
             key="delete"
             onClick={() => handleRemove(groupEventID)}
-            className="delete-button"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-md group focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+            style={{
+              backgroundColor: "#A5F6FB",
+              borderColor: "white",
+              color: "black",
+              borderRadius: "8px",
+              padding: "10px",
+              marginLeft: "16px",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#80D7E7";
+              e.target.style.color = "white";
+              e.target.style.borderColor = "#A5F6FB";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "#A5F6FB";
+              e.target.style.color = "black";
+              e.target.style.borderColor = "white";
+            }}
           >
             Delete
-          </button>,
-          <button onClick={editHandleCancel} className="cancel-button">
-            Cancel
           </button>,
         ]}
       >

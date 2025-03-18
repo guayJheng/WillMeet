@@ -249,7 +249,7 @@ const Calendar = () => {
         footer={[
           <button
             key="delete"
-            className="text-red-500 ml-2 hover:underline"
+            className="text-gray-500 ml-2 hover:text-black underline"
             onClick={() => handleRemove(selectEventID)}
           >
             Delete

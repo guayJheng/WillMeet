@@ -12,7 +12,7 @@ export async function POST(req) {
     groupId,
     userId,
   } = await req.json();
-  console.log({ title, start, end, allDay });
+
   try {
     await connectMongoDB();
     await groupEvents.create({ title, start, end, allDay, groupId, userId });
@@ -31,7 +31,7 @@ export async function POST(req) {
 export async function DELETE(req) {
   const { userId, groupId } = await req.json();
   await connectMongoDB();
-  const groupEvent = await groupEvents.find({ groupId, userId });
+  const groupEvent = await groupEvents.find({ groupId });
   console.log("eiei", groupEvent);
   return NextResponse.json({ groupEvent });
 }
