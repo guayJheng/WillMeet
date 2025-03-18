@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
+import { Noto_Sans_Thai } from "next/font/google";
+
+const notoSansThai = Noto_Sans_Thai({
+  subsets: ["thai"],
+});
 
 function Popup({ onClose }) {
   const { eventID } = useParams();
@@ -8,8 +13,6 @@ function Popup({ onClose }) {
   const [eventValues, setEventValues] = useState({
     groupId: eventID,
   });
-
-  //apiปลอม
 
   const fetchData = (value) => {
     fetch("/api/addUser")
@@ -55,7 +58,7 @@ function Popup({ onClose }) {
 
   const SearchResultList = ({ results }) => {
     return (
-      <div>
+      <div className={`${notoSansThai.className}`}>
         {results.map((result, id) => (
           <div
             className="py-4 px-10 flex justify-between items-center"
@@ -78,7 +81,9 @@ function Popup({ onClose }) {
   };
 
   return (
-    <div className="z-10 fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+    <div
+      className={`z-10 fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center${notoSansThai.className}`}
+    >
       <div className="m-auto w-[30rem] relative py-16 px-10 rounded-3xl bg-[#CCF2F4]">
         <h1 className="text-3xl font-semibold mb-8 text-left">
           Add new member

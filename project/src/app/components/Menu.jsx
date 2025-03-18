@@ -7,6 +7,11 @@ import { useParams } from "next/navigation";
 import DeleteOption from "./deleteOption";
 import moment from "moment";
 import { Modal, Space } from "antd";
+import { Noto_Sans_Thai } from "next/font/google";
+
+const notoSansThai = Noto_Sans_Thai({
+  subsets: ["thai"],
+});
 
 function Menu() {
   const { eventID } = useParams();
@@ -120,6 +125,7 @@ function Menu() {
       });
       if (res.ok) {
         alert("You have exited the group.");
+        // {()}
         window.location.href = "/";
       } else {
         throw new Error("Failed to Remove User");
@@ -127,10 +133,6 @@ function Menu() {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleCancel = () => {
-    alert("Cancelled");
   };
 
   const showDeleteConfirm = () => {
@@ -144,14 +146,15 @@ function Menu() {
         console.log("OK");
       },
       onCancel() {
-        handleCancel();
         console.log("Cancel");
       },
     });
   };
 
   return (
-    <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
+    <div
+      className={`bg-[#CCF2F4] h-full pt-10 text-center w-5rem${notoSansThai.className}`}
+    >
       {!session ? (
         <h1>
           <div className="hover:bg-white py-2 transition ease-in-out delay-50">
@@ -189,7 +192,6 @@ function Menu() {
           )}
         </ul>
       </div>
-
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
         <div className="text-xl block text-left ml-10 mb-3">Group</div>

@@ -13,7 +13,7 @@ export async function DELETE(req) {
       { $pull: { groupMembers: userId } },
       { new: true }
     );
-    console.log("eeeeeeeeeee", updatedGroup);
+    console.log("Check", updatedGroup);
     if (!updatedGroup) {
       return NextResponse.json(
         { message: "Group not found." },
