@@ -44,6 +44,7 @@ function Popup({ onClose }) {
       });
       if (res.ok) {
         alert("User Added");
+        window.location.reload();
       } else {
         throw new Error("Failed to Add User");
       }

@@ -12,14 +12,14 @@ function Menu() {
   const { eventID } = useParams();
   const { data: session } = useSession();
   const [groupList, setGroupList] = useState([]);
-  const [groupName, setGroupName] = useState([]);
+  const [memberList, setMemberList] = useState([]);
   const [todayList, setTodaylist] = useState([]);
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
   const [results, setResults] = useState([]);
-  console.log("Here", todayList);
+  console.log("member Hereeee", memberList);
 
   const getGroupData = async () => {
     try {
@@ -45,6 +45,34 @@ function Menu() {
   useEffect(() => {
     if (session) {
       getGroupData();
+    }
+  }, [session]);
+
+  const getMemberList = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/group/`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({ groupId: eventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch member data");
+      }
+
+      const data = await res.json();
+
+      setMemberList(data.groupMembers);
+    } catch (error) {
+      console.log("Error loading member data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      getMemberList();
     }
   }, [session]);
 
@@ -91,7 +119,7 @@ function Menu() {
       });
       if (res.ok) {
         alert("You have exited the group.");
-        window.location.reload();
+        window.location.href = "/";
       } else {
         throw new Error("Failed to Remove User");
       }
@@ -136,22 +164,6 @@ function Menu() {
           <Link href="/" className="text-2xl text-center">
             {session?.user?.name}&apos;s Calendar
           </Link>
-          {/* {groupId ? (
-            <div>
-              <h1>
-                <Link href="/" className="text-2xl text-center">
-                  {session?.user?.name}&apos;s Calendar
-                </Link>
-              </h1>
-              <p>Name of group</p>
-            </div>
-          ) : (
-            <h1>
-              <Link href="/" className="text-2xl text-center">
-                {session?.user?.name}&apos;s Calendar
-              </Link>
-            </h1>
-          )} */}
         </div>
       )}
       <h1>Name of Group{eventID}</h1>
@@ -225,13 +237,22 @@ function Menu() {
             </div>
             <div>
               <div className="group flex justify-between ">
-                <div className="ml-10">a</div>
-
-                <img
-                  className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-                  onClick={() => setShowshowDeleteOption((prev) => !prev)}
-                  src="/image/optionIcon.png"
-                />
+                <div className="text-left">
+                  {memberList &&
+                    memberList.map((member) => (
+                      <div className="group">
+                        <div className="flex justify-between  ">
+                          <Link
+                            key={member._id}
+                            href={`/groupCalendar/${member._id}`}
+                            className="ml-10 my-1 "
+                          >
+                            {member.name}
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
 
               {showDeleteOption && (
@@ -242,7 +263,9 @@ function Menu() {
             </div>
           </div>
         ) : (
-          <div></div>
+          <div>
+            <div className="text-left"></div>
+          </div>
         )}
       </div>
     </div>
