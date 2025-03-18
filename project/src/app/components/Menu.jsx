@@ -12,12 +12,14 @@ function Menu() {
   const { eventID } = useParams();
   const { data: session } = useSession();
   const [groupList, setGroupList] = useState([]);
+  const [groupName, setGroupName] = useState([]);
   const [todayList, setTodaylist] = useState([]);
   const [show1stPopup, setShow1stPopup] = useState(false);
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
   const [results, setResults] = useState([]);
+  console.log("Here", todayList);
 
   const getGroupData = async () => {
     try {
@@ -58,10 +60,13 @@ function Menu() {
       }
       const data = await res.json();
       const today = moment().format("DD/MM/YYYY");
+
       const todayEvents = data.filter(
         (event) => moment(event.start).format("DD/MM/YYYY") === today
       );
+
       setTodaylist(todayEvents);
+
       console.log("Today's events: ", todayEvents);
     } catch (error) {
       console.log("Error loading Today's events: ", error);
@@ -118,30 +123,55 @@ function Menu() {
 
   return (
     <div className="bg-[#CCF2F4] h-full pt-10 text-center w-5rem ">
-      <div className="hover:bg-white py-2 transition ease-in-out delay-50">
-      <Link href="/" className="text-2xl text-center">
-        {session?.user?.name}&apos;s Calendar
-      </Link>
-      </div>
-
+      {!session ? (
+        <h1>
+          <div className="hover:bg-white py-2 transition ease-in-out delay-50">
+            <Link href="/" className="text-2xl text-center">
+              Calendar
+            </Link>
+          </div>
+        </h1>
+      ) : (
+        <div className="hover:bg-white py-2 transition ease-in-out delay-50">
+          <Link href="/" className="text-2xl text-center">
+            {session?.user?.name}&apos;s Calendar
+          </Link>
+          {/* {groupId ? (
+            <div>
+              <h1>
+                <Link href="/" className="text-2xl text-center">
+                  {session?.user?.name}&apos;s Calendar
+                </Link>
+              </h1>
+              <p>Name of group</p>
+            </div>
+          ) : (
+            <h1>
+              <Link href="/" className="text-2xl text-center">
+                {session?.user?.name}&apos;s Calendar
+              </Link>
+            </h1>
+          )} */}
+        </div>
+      )}
+      <h1>Name of Group{eventID}</h1>
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
       <div className="bg-white py-8">
         <h1 className="text-xl text-left ml-10 mb-3">Today's Events</h1>
-          <ul>
-            {todayList.length > 0 ? (
-              todayList.map((event, index) => (
-                <li
-                className="text-left ml-10 mb-1"
-                key={index}>{event.title}</li>
-              ))
-            ) : (
-              <li>No event for today</li>
-            )}
-          </ul>
-        
+        <ul>
+          {todayList.length > 0 ? (
+            todayList.map((event, index) => (
+              <li className="text-left ml-10 mb-1" key={index}>
+                {event.title}
+              </li>
+            ))
+          ) : (
+            <li>No event for today</li>
+          )}
+        </ul>
       </div>
-      {/* <p>{eventID}</p> */}
+      <p>{eventID}</p>
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
         <div className="text-xl block text-left ml-10 mb-3">Group</div>
@@ -161,19 +191,19 @@ function Menu() {
           groupList.map((group) => (
             <div className="group">
               <div className="flex justify-between  group-hover:bg-white ransition ease-in-out delay-75 ">
-            <Link
-              key={group._id}
-              href={`/groupCalendar/${group._id}`}
-              className="ml-10 my-1 "
-            >
-              {group.groupName}
-            </Link>
-            <img
-            className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
-            onClick={showDeleteConfirm}
-            src="/image/optionIcon.png"
-          />
-            </div>
+                <Link
+                  key={group._id}
+                  href={`/groupCalendar/${group._id}`}
+                  className="ml-10 my-1 "
+                >
+                  {group.groupName}
+                </Link>
+                <img
+                  className="invisible mr-5 mt-1 rounded w-5 h-5 cursor-pointer  group-hover:visible  transition ease-in-out delay-75"
+                  onClick={showDeleteConfirm}
+                  src="/image/optionIcon.png"
+                />
+              </div>
             </div>
           ))}
       </div>
