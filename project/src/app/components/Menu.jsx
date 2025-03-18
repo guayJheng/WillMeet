@@ -18,8 +18,9 @@ function Menu() {
   const [show2ndPopup, setShow2ndPopup] = useState(false);
   const { confirm } = Modal;
   const [showDeleteOption, setShowshowDeleteOption] = useState(false);
-  const [results, setResults] = useState([]);
-  console.log("member Hereeee", memberList);
+  const group = groupList.find((group) => group._id === eventID);
+
+  console.log("member Hereeee", group);
 
   const getGroupData = async () => {
     try {
@@ -166,7 +167,12 @@ function Menu() {
           </Link>
         </div>
       )}
-      <h1>Name of Group{eventID}</h1>
+      {eventID ? (
+        <h1>{group ? `${group.groupName} Calendar` : "Group not found"}</h1>
+      ) : (
+        <h1>Private Calendar</h1>
+      )}
+
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
 
       <div className="bg-white py-8">
@@ -183,7 +189,7 @@ function Menu() {
           )}
         </ul>
       </div>
-      <p>{eventID}</p>
+
       <hr className="w-4/5 h-0.5 my-5 mx-auto bg-black border-0 rounded" />
       <div className="flex justify-between">
         <div className="text-xl block text-left ml-10 mb-3">Group</div>
