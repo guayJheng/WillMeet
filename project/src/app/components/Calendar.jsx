@@ -27,7 +27,6 @@ const Calendar = () => {
   });
   const handleClick = (info) => {
     showEditModal();
-
     setEventID(info.event._def.extendedProps._id);
     console.log(info.event._def.extendedProps._id);
   };
@@ -48,8 +47,15 @@ const Calendar = () => {
       });
       if (res.ok) {
         alert("Title Edited");
-        getData();
         router.refresh();
+        getData();
+        setEventValues({
+          title: "",
+          start: "",
+          end: "",
+          allDay: true,
+          userId: session?.user.id,
+        });
       } else {
         throw new Error("Failed to edit the Event");
       }
@@ -59,6 +65,28 @@ const Calendar = () => {
     setEditIsModalVisible(false);
   };
 
+  const handleRemove = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
+        method: "DELETE",
+        cache: "no-store",
+        body: JSON.stringify({ eventID: EventID }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete Event");
+      }
+      const data = await res.json();
+      alert(data.message);
+      getData();
+      router.refresh();
+      setEditIsModalVisible(false);
+    } catch (error) {
+      console.log("Error deleting event: ", error);
+    }
+  };
   const currentMonth = async (info) => {
     // console.log("eieiei", sessionUser);
 
@@ -156,38 +184,13 @@ const Calendar = () => {
     } catch (error) {
       console.log(error);
     }
+
     setIsModalVisible(false);
   };
 
   const editHandleCancel = () => {
     setEventValues({ title: "", start: "", end: "", allDay: true });
     setEditIsModalVisible(false);
-  };
-
-  const handleRemove = async (selectEventID) => {
-    try {
-      const res = await fetch(`http://localhost:3000/api/deleteEvent`, {
-        method: "DELETE",
-        cache: "no-store",
-        body: JSON.stringify({
-          userId: session.user.id,
-          eventId: selectEventID,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to delete Event");
-      }
-      const data = await res.json();
-      alert(data.message);
-      getData();
-      router.refresh();
-      setEditIsModalVisible(false);
-    } catch (error) {
-      console.log("Error deleting event: ", error);
-    }
   };
 
   useEffect(() => {

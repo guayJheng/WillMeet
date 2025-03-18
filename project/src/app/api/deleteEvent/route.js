@@ -3,11 +3,11 @@ import Event from "../../../../models/events";
 import { NextResponse } from "next/server";
 
 export async function DELETE(req) {
-  const { userId, eventId } = await req.json();
+  const { eventID } = await req.json();
 
   try {
     await connectMongoDB();
-    const deletedEvent = await Event.findOneAndDelete({ _id: eventId, userId });
+    const deletedEvent = await Event.findOneAndDelete({ _id: eventID });
 
     if (!deletedEvent) {
       return NextResponse.json(
