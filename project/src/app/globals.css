@@ -1,4 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: "Noto Sans Thai", sans-serif;
+}
+
+.fc-today-button {
+  @apply bg-green-500 text-white;
+}
+
+.fc-prev-button,
+.fc-next-button {
+  @apply bg-red-500 text-white;
+}
+
+.fc-button-group .fc-button {
+  @apply bg-[#A5F6FB] text-black;
+}
+
+.fc-button-group .fc-button:hover {
+  @apply bg-white text-black;
+}
+
+.fc-event {
+  background-color: #a5f6fb;
+  color: black;
+}
+
+.fc-event-title {
+  background-color: #a5f6fb;
+  color: black;
+}
+
+.ant-btn-primary {
+  background-color: #a5f6fb;
+  border-color: white;
+  color: black;
+}
+.ant-btn-primary:hover {
+  background-color: #80d7e7 !important;
+  color: white !important;
+  border-color: #a5f6fb;
+}
+
+.ant-modal-footer .ant-btn-default:hover {
+  background-color: #f0f0f0;
+  color: black !important;
+  border-color: black !important;
+}

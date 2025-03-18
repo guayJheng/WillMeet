@@ -81,15 +81,13 @@ const Calendar = () => {
       const data = await res.json();
       alert(data.message);
       getData();
-      router.refresh();
+      window.location.reload();
       setEditIsModalVisible(false);
     } catch (error) {
       console.log("Error deleting event: ", error);
     }
   };
   const currentMonth = async (info) => {
-    // console.log("eieiei", sessionUser);
-
     const m = info.view.calendar.currentDataManager.data.currentDate;
     const Month = moment(m).format("M");
 
@@ -104,7 +102,6 @@ const Calendar = () => {
       if (res.ok) {
         const data = await res.json();
         setCurrentEvent(data.currentM);
-        // console.log(data.currentM);
       } else {
         throw new Error("Failed to get month");
       }
@@ -199,25 +196,43 @@ const Calendar = () => {
 
   return (
     <div>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        events={eventsData}
-        selectable={true}
-        select={handleSelect}
-        height="89vh"
-        eventClick={handleClick}
-        datesSet={currentMonth}
-      />
+      {!session ? (
+        <div>
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            height="89vh"
+          />
+        </div>
+      ) : (
+        <div>
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            events={eventsData}
+            selectable={true}
+            select={handleSelect}
+            height="89vh"
+            eventClick={handleClick}
+            datesSet={currentMonth}
+          />
+        </div>
+      )}
+
       <Modal
         title="Create Event"
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        okText="Create"
       >
         <input
           name="title"
@@ -233,23 +248,35 @@ const Calendar = () => {
         onCancel={editHandleCancel}
         footer={[
           <button
-            onClick={editHandleOk}
-            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-lg group bg-gradient-to-br from-white to-white group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
-            style={{
-              background: "#A4EBF3",
-              borderRadius: "9999px",
-              padding: "10px",
-              marginRight: "8px",
-            }}
-          >
-            Submit
-          </button>,
-          <button
             key="delete"
-            className="text-red-500 ml-2"
+            className="text-red-500 ml-2 hover:underline"
             onClick={() => handleRemove(selectEventID)}
           >
             Delete
+          </button>,
+          <button
+            onClick={editHandleOk}
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-lg group focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+            style={{
+              backgroundColor: "#A5F6FB",
+              borderColor: "white",
+              color: "black",
+              borderRadius: "8px",
+              padding: "10px",
+              marginLeft: "16px",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#80D7E7";
+              e.target.style.color = "white";
+              e.target.style.borderColor = "#A5F6FB";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "#A5F6FB";
+              e.target.style.color = "black";
+              e.target.style.borderColor = "white";
+            }}
+          >
+            Submit
           </button>,
         ]}
       >
