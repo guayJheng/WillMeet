@@ -125,6 +125,7 @@ function RegisterPage() {
               />
               <button
                 type="submit"
+                href="/login"
                 className="w-full bg-black text-white hover:bg-[#939393] active:bg-[#7B7B7B] text-black border  py-2 px-3 rounded-md text-lg my-2 "
               >
                 Sign Up
